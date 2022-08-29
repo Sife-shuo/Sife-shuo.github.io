@@ -1,0 +1,15 @@
+<html>
+<head>
+<script>
+window.addEventListener("message", (e) => {
+    a=JSON.parse(e.data);
+    b=JSON.parse(window.localStorage.APIbutknowledgecookie);
+    b[a.set]?()=>{b[a['set']]['url'].push(a['url']);b[a['set']]['x'].push(a['x']);b[a['set']]['y'].push(a['y'])}:void(0);
+    window.localStorage.APIbutknowledgecookie=JSON.stringify(b);
+});
+if(!window.localStorage.APIbutknowledgecookie){window.localStorage.APIbutknowledgecookie=JSON.stringify({'set1':{'url':[],'x':[],'y':[]}})}
+</script>
+</head>
+<body>
+</body>
+</html>
