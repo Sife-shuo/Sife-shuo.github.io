@@ -1,0 +1,29 @@
+<html>
+<head>
+<script>
+window.addEventListener("message", (e) => {
+    a=JSON.parse(e.data);
+    if(a['newset']){
+        b=JSON.parse(window.localStorage.APIbutknowledgecookie);
+        b[a['newset']]={'url':[]};
+        window.localStorage.removeItem('APIbutknowledgecookie');
+        window.localStorage.APIbutknowledgecookie=JSON.stringify(b);
+    }else if(a['open']){
+        for(var i=0;i<JSON.parse(window.localStorage.APIbutknowledgecookie)[a['open']]['url'].length;i++){
+            window.open(JSON.parse(window.localStorage.APIbutknowledgecookie)[a['open']]['url'][i]);
+        };
+    }else if(a['allset']){
+        window.postMessage(JSON.stringify(window.localStorage.APIbutknowledgecookie), a['allset']);
+    }else{
+        if(!window.localStorage.APIbutknowledgecookie){window.localStorage.APIbutknowledgecookie=JSON.stringify({'set':{'url':[]}})}
+        b=JSON.parse(window.localStorage.APIbutknowledgecookie);
+        b[a['set']]['url'].push(a['url']);
+        window.localStorage.removeItem('APIbutknowledgecookie');
+        window.localStorage.APIbutknowledgecookie=JSON.stringify(b);
+    }
+});
+</script>
+</head>
+<body>
+</body>
+</html>
