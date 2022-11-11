@@ -1,0 +1,25 @@
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<style>
+textarea{width: 90%;height: 30%;}
+</style>
+<span>请输入要加密的内容:</span><br><textarea id="will"></textarea><br>
+<span>请输入要解密的内容:</span><br><textarea id="inwill"></textarea><br>
+<button onclick="go()">Done</button><button onclick="navigator.clipboard.writeText(document.getElementById('inwill').value);">复制解密内容</button><br>
+<span>
+注:加密内容为空时会解密解密框内容
+</span>
+<script>
+function go(){
+    if(document.getElementById('will').value){
+        document.getElementById('inwill').value=password(document.getElementById('will').value)
+    }else if(document.getElementById('inwill').value){
+        document.getElementById('will').value=inpassword(document.getElementById('inwill').value)
+    }else{
+        document.getElementById('inwill').value='Error!!!!!';
+    }
+}
+const password=(text)=>{return text.split('').map(e=>{return password_10(e.charCodeAt(0))}).join(".")};
+const password_10=(text)=>{return text.toString(2).replaceAll('1','!').replaceAll('0','?')};
+const inpassword=(pass)=>{var ar=[];pass.split('.').map(e=>{ar.push(String.fromCharCode(inpassword_10(e)))});return ar.join("")};
+const inpassword_10=(pass)=>{return parseInt(pass.replaceAll('!','1').replaceAll('?','0'),2)}
+</script>
