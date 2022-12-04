@@ -1,6 +1,9 @@
+<!DOCTYPE html>
 <html>
 <head>
-<title></title>
+<title>数字华容道</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 #all{
     width:440px;
@@ -26,7 +29,7 @@
 </div>
 <button onclick="o()" id="win">随机BUG解决（右下角替换）</button>
 <script>
-b=6;
+b=Number(window.prompt("请输入华容道边长", "4"));
 w=[];
 db=new Array(b*b-1).fill(1).map((v, i) => ++i);
 db.push(0);
