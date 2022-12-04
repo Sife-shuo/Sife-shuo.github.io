@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>五子棋</title>
+    <style>
+        div{position: relative;}
+        canvas{position: absolute;}
+    </style>
+</head>
+<body>
+<div>
+    <canvas id="ma" width="600" height="600" onclick="if(ican==1){em(event)}"></canvas>
+</div>
+<script>
+ican=1;
+wait=1;
+chess=[];
+Array(15).fill().map(e=>{chess.push(Array(15).fill(2).map(o=>{return o}))});
+function draw(){
+    var canvas = document.getElementById('ma');
+    if (!canvas.getContext) return;
+    var ctx = canvas.getContext("2d");
+    ctx.beginPath();
+    Array(15).fill().map((e,a)=>{ctx.moveTo(20,20+a*40);ctx.lineTo(580,20+a*40);});
+    Array(15).fill().map((e,a)=>{ctx.moveTo(20+a*40,20);ctx.lineTo(20+a*40,580);});
+    ctx.moveTo(1,1);ctx.lineTo(599,1);ctx.lineTo(599,599);ctx.lineTo(1,599);ctx.lineTo(1,1);
+    ctx.closePath();
+    ctx.stroke();
+}
+draw();
+function em(event){
+    var x=event.layerX;var y=event.layerY;var [w,h]=[x,y].map(e=>{e=e-e%40;return e/40+1});
+    if(wait==0){o(w,h);wait=1;chs(w,h,0);}else{xo(w,h);wait=0;chs(w,h,1)};check(w,h)
+};
+function xo(x,y){
+    var canvas = document.getElementById('ma');
+    if (!canvas.getContext) return;
+    var ctx = canvas.getContext("2d");
+    ctx.fillStyle="black";
+    ctx.beginPath();
+    ctx.arc((x-1)*40+20,(y-1)*40+20,15,0,Math.PI*2);
+    ctx.stroke();
+    ctx.fill();
+};
+function o(x,y){
+    var canvas = document.getElementById('ma');
+    if (!canvas.getContext) return;
+    var ctx = canvas.getContext("2d");
+    ctx.fillStyle="white";
+    ctx.beginPath();
+    ctx.arc((x-1)*40+20,(y-1)*40+20,15,0,Math.PI*2);
+    ctx.closePath();
+    ctx.stroke();
+    ctx.fill();
+};
+function chs(x,y,t){chess[y-1][x-1]=t;};
+function check(x,y){
+    [x,y]=[x-1,y-1];
+    var ov=[];//[↖,↑,↗,→]
+    var ylist=Array(9).fill().map((p,e)=>{return e+y-4});
+    var xlist=Array(9).fill().map((p,e)=>{return e+x-4});
+    ov.push(Array(9).fill().map((e,p)=>{try{return chess[ylist[p]][xlist[p]]}catch(err){return -1}}));
+    ov.push(ylist.map(e=>{try{return chess[e][x]}catch(err){return -1}}));
+    ov.push(Array(9).fill().map((e,p)=>{try{return chess[(ylist)[ylist.length-p-1]][xlist[p]]}catch(err){return -1}}));
+    ov.push(xlist.map(e=>{try{return chess[y][e]}catch(err){return -1}}));
+    ov.map((e,q)=>{e.cn(1).indexOf(true)==-1?e.cn(0).indexOf(true)==-1?void(0):win(0,q,e,x+1,y+1):win(1,q,e,x+1,y+1)});
+    return false;
+};
+function win(n,q,e,x,y){
+    var canvas = document.getElementById('ma');
+    if (!canvas.getContext) return;
+    var ctx = canvas.getContext("2d");
+    ctx.strokeStyle="red";
+    if(q==0){
+        x=x-5+e.cn(n).indexOf(true);
+        y=y-5+e.cn(n).indexOf(true);
+        ctx.beginPath();
+        ctx.moveTo(x*40+20,y*40+20);
+        ctx.lineTo((x+4)*40+20,(y+4)*40+20);
+        ctx.lineWidth = 5;
+        ctx.closePath();
+        ctx.stroke();
+    }else if(q==1){
+        y=y-5+e.cn(n).indexOf(true);
+        x=x-1;
+        ctx.beginPath();
+        ctx.moveTo(x*40+20,y*40+20);
+        ctx.lineTo(x*40+20,(y+4)*40+20);
+        ctx.lineWidth = 5;
+        ctx.closePath();
+        ctx.stroke();
+    }else if(q==2){
+        x=x-5+e.cn(n).indexOf(true);
+        y=y+3-e.cn(n).indexOf(true);
+        ctx.beginPath();
+        ctx.moveTo(x*40+20,y*40+20);
+        ctx.lineTo((x+4)*40+20,(y-4)*40+20);
+        ctx.lineWidth = 5;
+        ctx.closePath();
+        ctx.stroke();
+    }else if(q==3){
+        x=x-5+e.cn(n).indexOf(true);
+        y=y-1;
+        ctx.beginPath();
+        ctx.moveTo(x*40+20,y*40+20);
+        ctx.lineTo((x+4)*40+20,y*40+20);
+        ctx.lineWidth = 5;
+        ctx.closePath();
+        ctx.stroke();
+    };ican=0;var i=document.createElement('div');i.style.position="absolute";i.style.top="610px";i.innerText="执"+(n==0?"白":"黑")+"子者胜";document.body.append(i);
+    return false;
+}
+Array.prototype.cn=function(t){
+    return this.map((e,p)=>{return e==t?this.n(p+1,t)&&this.n(p+2,t)&&this.n(p+3,t)&&this.n(p+4,t)?true:false:false;})
+};
+Array.prototype.n=function(index,o){if(index<this.length){return this[index]==o}else{return false}}
+</script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<style>
+#red{
+    width:48px;
+    height: 48px;
+    background-color: rgb(255, 187, 187);
+    position: absolute;
+}
+#blue{
+    width:48px;
+    height: 48px;
+    background-color: rgb(199, 199, 255);
+    position: absolute;
+    top:calc(11px);
+    left: calc(11px);
+}
+</style>
+</head>
+<body style="margin: 10px;">
+<div id="red"></div>
+<div id="blue"></div>
+<canvas id="tul"></canvas>
+<script>
+wi=18;
+he=14;
+document.getElementById('tul').setAttribute('width',String(wi*50)+'px');
+document.getElementById('tul').setAttribute('height',String(he*50)+'px');
+document.getElementById('red').style.top=String((he-1)*50+11)+'px';
+document.getElementById('red').style.left=String((wi-1)*50+11)+'px';
+[c,d]=[wi,he]
+e=1;
+f=1;
+mkl=0.35;
+document.addEventListener("keydown",keydown);
+function keydown(event){
+    if(event.keyCode==37&&c!=1&&allnot[d-1].indexOf(c-1)==-1){
+        document.getElementById("red").style.left=String(Number(getComputedStyle(document.getElementById('red'),null)['left'].replace('px',''))-50)+'px';
+        c=c-1;
+    }
+    else if(event.keyCode==39&&c!=wi&&allnot[d-1].indexOf(c+1)==-1){
+        document.getElementById("red").style.left=String(Number(getComputedStyle(document.getElementById('red'),null)['left'].replace('px',''))+50)+'px';
+        c=c+1;
+    }
+    else if(event.keyCode==40&&d!=he&&allnot[d].indexOf(c)==-1){
+        document.getElementById("red").style.top=String(Number(getComputedStyle(document.getElementById('red'),null)['top'].replace('px',''))+50)+'px';
+        d=d+1;
+    }
+    else if(event.keyCode==38&&d!=1&&allnot[d-2].indexOf(c)==-1){
+        document.getElementById("red").style.top=String(Number(getComputedStyle(document.getElementById('red'),null)['top'].replace('px',''))-50)+'px';
+        d=d-1;
+    }
+    else if(event.keyCode==65&&e!=1&&allnot[f-1].indexOf(e-1)==-1){
+        document.getElementById("blue").style.left=String(Number(getComputedStyle(document.getElementById('blue'),null)['left'].replace('px',''))-50)+'px';
+        e=e-1;
+    }
+    else if(event.keyCode==68&&e!=wi&&allnot[f-1].indexOf(e+1)==-1){
+        document.getElementById("blue").style.left=String(Number(getComputedStyle(document.getElementById('blue'),null)['left'].replace('px',''))+50)+'px';
+        e=e+1;
+    }
+    else if(event.keyCode==83&&f!=he&&allnot[f].indexOf(e)==-1){
+        document.getElementById("blue").style.top=String(Number(getComputedStyle(document.getElementById('blue'),null)['top'].replace('px',''))+50)+'px';
+        f=f+1;
+    }
+    else if(event.keyCode==87&&f!=1&&allnot[f-2].indexOf(e)==-1){
+        document.getElementById("blue").style.top=String(Number(getComputedStyle(document.getElementById('blue'),null)['top'].replace('px',''))-50)+'px';
+        f=f-1;
+    }
+};
+function randomNum(minNum,maxNum){ 
+    switch(arguments.length){ 
+        case 1: 
+            return parseInt(Math.random()*minNum+1,10); 
+        break; 
+        case 2: 
+            return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10);
+        break; 
+            default: 
+                return 0; 
+            break; 
+    };
+};
+allnot=[];
+for(var i=0;i<he;i++){allnot.push([])};
+var canvas = document.getElementById('tul');
+var ctx = canvas.getContext("2d");
+for(var i=0;i<Math.floor(wi*he*mkl);i++){
+    abn=randomNum(1,wi)
+    fgh=randomNum(1,he)
+    if(abn!=1||fgh!=1){
+        ctx.fillRect(50*abn-50,50*fgh-50,50,50);
+        allnot[fgh-1].push(abn);
+    }
+};
+function draw(a,b){
+    for(i=0;i<b;i++){
+        for(var j=0;j<a;j++){
+            ctx.strokeRect(50*j,50*i,50,50);  
+        };
+    };
+};
+draw(wi,he);
+</script>
+</body>
+</html>
