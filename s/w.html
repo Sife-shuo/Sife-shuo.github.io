@@ -13,7 +13,7 @@
 <body>
 <div>
     <canvas id="ma" width="600" height="600" onclick="if(ican==1){em(event)}"></canvas>
-</div><button onclick="open(document.getElementById('ma').toDataURL('image/png'))">导出棋谱</button>
+</div><button onclick="window.open(document.getElementById('ma').toDataURL('image/png'))">导出棋谱</button>
 <script>
 ican=1;
 wait=1;
