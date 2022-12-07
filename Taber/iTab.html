@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html style="height:100%;">
+<head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taber</title>
+<style>body{height: 100%;margin: 0;background-color: aliceblue;--border-re:16px;--space:none;--plugtitle:white;transition: background-image 0.3s;background-position: center center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;}
+iframe{border: 0;}li{list-style: none;}ul{padding: 0;position:relative;}
+#mainpage{z-index:-1;width:70%;height: 70%;position:fixed;left: 15%;top: 15%;background-color: white;border-radius: var(--border-re);opacity:0;transition: opacity 0.1s}
+.settings{-webkit-user-select:none;user-select:none;width: 130px;text-align: center;height: 21px;padding-top: 10px;padding-bottom: 10px;transition: border-bottom 0.1s,color 0.1s;}.settings:hover{background-color: rgb(230, 230, 230);color: rgb(44, 44, 44);}
+#tohide{background-color: black;opacity: 0;display: none;transition: opacity 0.1s;z-index: -1;}.message{width:calc(92.5% - 40px);margin:20px auto 0 auto;padding: 25px;background-color: white;border-radius: var(--border-re);}
+#notc{margin-top: -100px;}li > div:nth-child(2){white-space: nowrap;}
+</style>
+<script>
+if(!localStorage.getItem("config")){
+    localStorage.setItem("config",JSON.stringify(
+        {"border-re":'16px','backimg':'https://w.wallhaven.cc/full/g7/wallhaven-g7jq3l.png','plugtitle':'white','plug':[["{\"name\":\"Setting\",\"author\":\"Sife\",\"version\":\"1.0.0\",\"size\":{\"w1h1\":\"<body style=\\\"margin:0;width:60px;height:60px;background-color:blue;overflow:hidden\\\" onclick=\\\"window.parent.document.querySelector('#userUI').click()\\\"><img src='https://sife-shuo.github.io/BTab/setting.png' style=\\\"width:50px;height:50px;margin:5px 5px\\\"></body>\"}}"]],'op':[[1,1,1]]}
+    ));
+} 
+config=JSON.parse(localStorage.getItem("config"));
+//config["border-re"]='16px';
+//config['backimg']='https://w.wallhaven.cc/full/g7/wallhaven-g7jq3l.png';
+//config['plugtitle']='white';
+//config{"border-re",'backimg','plugtitle',plug:[[pluging,w,h,nameb]],'last-w'}
+truepos=[];
+not=[];
+window.onload=()=>{
+    document.body.style.backgroundImage='url('+config['backimg']+')';document.body.style.backgroundSize='cover';
+    document.body.style.setProperty('--border-re',config["border-re"]);document.body.style.setProperty('--plugtitle',config['plugtitle']);
+    config["w"]=config['last-w']?config['last-w']:(document.body.clientWidth-document.body.clientWidth%90)/90;
+    truepos.push(new Array(config['w']).fill(0));
+    document.querySelector('.container').style.width=config['w']*90+'px';
+    document.querySelector('.container').style.height='100%';
+    document.querySelector('.container').style.margin= '0 auto';
+    document.querySelector('.container').style.marginTop=((document.body.clientWidth-config['w']*90)/2)<30?'30px':(document.body.clientWidth-config['w']*90)/2+'px';
+    document.querySelector('#userUI').onclick=()=>{if(document.getElementById('mainpage').style.opacity==1){
+        document.getElementById('mainpage').style.opacity=0;
+        document.getElementById('mainpage').style.zIndex=-1;
+        document.getElementById('tohide').style.opacity=0;
+        document.getElementById('tohide').style.zIndex=-1;
+        document.getElementById('tohide').style.display='none';
+    }
+    else{
+        document.getElementById('mainpage').style.opacity=1;
+        document.querySelector('div.settings:nth-child(1)').click();
+        document.getElementById('tohide').style.display='block';
+        document.getElementById('tohide').style.opacity=0.4;
+        document.getElementById('tohide').style.zIndex=2;
+        document.getElementById('mainpage').style.zIndex=3;
+    }
+    };
+    document.body.onkeydown=()=>{
+        if(event.ctrlKey && event.keyCode==88){//Ctrl+X
+            document.querySelector('#userUI').click()
+        }
+    }
+    document.body.onresize=()=>{location.assign(location.href)};
+    config['plug'].map((e,p)=>{try{addplug(e,config['op'][p][0],config['op'][p][1],config['op'][p][2])}catch(err){var pluging=JSON.parse(e);
+    var u=pluging['name']+'_'+pluging['author']+'_'+pluging['version'];not.push(u+' 加载错误:'+err)}});
+    document.getElementById('notc').style.left='calc(50% - '+(document.getElementById('notc').offsetWidth)/2+'px'+')';
+    not.length==0?notice('插件全部加载成功','#e3fdcc'):fnnotice=setInterval(function(){if(not.length==0){clearInterval(fnnotice)}else{notice(not[0],'#ffc0bd');not.shift()}},2000);
+}
+function bind(plug,x,y,w,h,nameb){
+    if(x+w-1<=config["w"]){
+    if(havechair(x,y,w,h)){
+    var pluging=JSON.parse(plug);
+    var u=pluging['name']+'_'+pluging['author']+'_'+pluging['version'];
+    if(document.getElementById(u)){return false}else{if(!pluging['space']){
+            var p=document.createElement('li');p.id=u;p.innerHTML='<div style=\'overflow:hidden;height:'+((90*h-30)+'px')+';width:'+(90*w-30)+'px;margin:0 auto\'></div><div style="width=100%;text-align:center;margin-top:6px;width:'+(90*w-30)+'px;margin:0 auto;overflow:hidden;color:var(--plugtitle)">'+(nameb?pluging['name']:'')+'</div>';
+            p.style.width=90*w+'px';p.style.height=90*h+'px';p.style.position='absolute';p.style.left=(x-1)*90+'px';p.style.top=(y-1)*90+'px';
+            document.querySelector('.container').append(p);
+            changechair(x,y,w,h,1);
+            var d=document.createElement('iframe');try{if(pluging['size']['w'+w+'h'+h]){d.srcdoc=pluging['size']['w'+w+'h'+h]}else{if(pluging['all']){d.srcdoc=pluging['all']}else{d.src=pluging['src'];}}}catch(err){};d.width=(90*w-30)+'px';d.style.height=nameb?(90*h-30)+'px':'100%';
+            d.style.borderRadius='var(--border-re)';
+            d.setAttribute('w',String(w));d.setAttribute('h',String(h));
+            p.querySelector('div').innerHTML=d.outerHTML;
+            return true;
+        }else{
+            var p=document.createElement('li');p.id=u;p.innerHTML='<div style=\'overflow:hidden;height:'+((90*h-30)+'px')+';width:'+(90*w-30)+'px;margin:0 auto\'></div>';
+            p.style.width=90*w+'px';p.style.height=90*h+'px';p.style.position='absolute';p.style.left=(x-1)*90+'px';p.style.top=(y-1)*90+'px';p.style.display='var(--space)';p.style.backgroundColor='grey';
+            document.querySelector('.container').append(p);
+            changechair(x,y,w,h,1);}
+    }}else{throw 'PosError'}}else{throw "WidError"}
+};
+function addplug(plug,w,h,nameb){
+    var [x,y]=findchair(w,h);
+    try{bind(plug,x,y,w,h,nameb)}catch(err){console.log(err)}
+};
+function addpluglist(plug,w,h,nameb){
+    config['plug'].push([plug]);config['op'].push([w,h,nameb]);addplug(plug,w,h,nameb)
+}
+/*
+window.frameElement.getAttribute('w') to getparent width
+function moveplug(plug,x,y,speed){
+    var pluging=JSON.parse(plug);
+    var u=pluging['name']+'_'+pluging['author']+'_'+pluging['version'];
+    var w=document.getElementById(u).style.width.replace('px','')/90;
+    var h=document.getElementById(u).style.height.replace('px','')/90;
+    if(x+w-1<=config['w']){
+    var sizing=[];for(var i=0;i<w;i++){for(var z=0;z<h;z++){sizing.push(x+i+'_'+(y+z))}};
+    var o=document.getElementById(u).style.left.replace('px','')/90+1;
+    var p=document.getElementById(u).style.top.replace('px','')/90+1;
+    var sizing2=[];for(var i=0;i<w;i++){for(var z=0;z<h;z++){sizing2.push(o+i+'_'+(p+z))}};
+    var poser=[];
+    var posin=plugpositions.remove(sizing2);
+    sizing.map((pos,n)=>{posin.indexOf(pos)==-1?poser[n]=0:poser[n]=1});
+    if(poser.indexOf(1)==-1){
+        if(document.getElementById(u)){
+            animate(document.getElementById(u),{'left':(x-1)*90+'px','top':(y-1)*90+'px'},speed);
+            plugpositions=plugpositions.remove(sizing2);
+            plugpositions=plugpositions.concat(sizing);
+        }else{throw 'NullPlug'}
+    }else{throw 'PosError'}}else{throw 'WidError'}
+};
+*/
+function findchair(w,h){
+    if(w>config['w']){throw "WidError"};
+    var blist=[];
+    var bland=0;
+    var isOK=0;
+    var poslong=truepos.length;
+    if(truepos.length<h){for(var i=0;i<(h-poslong);i++){truepos.push(new Array(config['w']).fill(0))}};try{
+    truepos.map((line,n)=>{bland=0;line.map((chair,m)=>{if(m==bland && m+w<=config['w'] && isOK==0){
+        if(chair==0){
+            for(var i=n;i<(h+n);i++){
+                if(truepos[i].slice(m,m+w).indexOf(1)==-1){
+                    blist.push(0);
+                }else{blist.push(1)}
+            };
+            if(blist.indexOf(1)==-1){
+                isOK=[m+1,n+1];
+            }else{bland++;blist=[]}
+        }else{bland++}
+    };
+    })});}catch(err){};
+    if(isOK==0){truepos.push(new Array(config['w']).fill(0));return findchair(w,h)}else{return isOK}
+}
+function changechair(x,y,w,h,num){var poslong=truepos.length;if(truepos.length<y+h){for(var i=0;i<(y+h-poslong);i++){truepos.push(new Array(config['w']).fill(0))}};for(var v=y-1;v<y-1+h;v++){for(var j=x-1;j<x-1+w;j++){truepos[v][j]=num}}};//change a part of truepos to num
+function havechair(x,y,w,h,num){var poslong=truepos.length;if(truepos.length<y+h){for(var i=0;i<(y+h-poslong);i++){truepos.push(new Array(config['w']).fill(0))}};var ch=[];for(var v=y-1;v<y-1+h;v++){for(var j=x-1;j<x-1+w;j++){ch.push(truepos[v][j])}};return ch.indexOf(1)==-1?true:false}
+/*
+plug：{
+	"name":,
+	"author":,
+	"version":,
+	"size":{"w1h1":<html>,......},
+    "src":,
+    "space":true/false
+}
+
+pulgpositions=[x_y,.....]
+*/
+function animate(el,params,speed){//speed:(string) 1s
+    el.style.transition = 'all ' + speed;
+    Object.keys(params).forEach((key) => {
+        el.style[key] = params[key];
+    });
+};
+Array.prototype.remove = function(v) {//v is an Array
+    var newa=new Array();
+    this.map(e=>{v.indexOf(e)==-1?newa.push(e):void(0)})
+    return newa;
+};
+function subcon(thi){
+    console.log(thi);
+    const fileReader = new FileReader();fileReader.readAsText(thi.files[0],'utf8');fileReader.onload=()=>{localStorage.setItem("config",fileReader.result);location.assign(location.href);}
+};
+function saveconfig(){
+    var willconfig=config;
+    Reflect.deleteProperty(willconfig,'w');
+    localStorage.setItem('config',JSON.stringify(willconfig));
+};
+function cho(n){document.querySelectorAll('div.settings').forEach(e=>{e.style.borderBottom='';e.style.color='black'});
+document.querySelector('div.settings:nth-child('+String(n)+')').style.borderBottom='3px solid blue';
+document.querySelector('div.settings:nth-child('+String(n)+')').style.color='blue';
+if(n==1){document.querySelector('#mainpage > div:nth-child(2)').innerHTML='<div class="message"><div style="text-align:center"><strong>导入配置</strong></div><input id="user-config" onchange="subcon(this)" type="file"/></div>'}
+else if(n==3){var willconfig=config;Reflect.deleteProperty(willconfig,'w');document.querySelector('#mainpage > div:nth-child(2)').innerHTML='<button id="use_c" onclick=\'dowloadconfig()\' style="margin:20px;padding:20px;background:white;border-radius: var(--border-re);">导出配置</button>'}
+};
+function notice(str,colors){document.getElementById('notc').style.backgroundColor=colors;animate(document.getElementById('notc'),{'margin-top':'40px'},'0.5s');document.getElementById('notc').innerText=str;document.getElementById('notc').style.left='calc(50% - '+(document.getElementById('notc').offsetWidth)/2+'px'+')';var s=setTimeout(function(){animate(document.getElementById('notc'),{'margin-top':'-100px'},'0.5s');clearTimeout(s)},3000);}
+function dowloadconfig(){
+    var willconfig=config;Reflect.deleteProperty(willconfig,'w');
+    var element = document.createElement('a');
+    element.setAttribute('href', URL.createObjectURL(new Blob([JSON.stringify(willconfig)],{type: "text/plain;charset=utf-8"})));
+    element.setAttribute('download', 'config.json');
+    element.click();
+    return true;
+}
+</script>
+</head>
+<body>
+<ul class="container"></ul>
+<div id="userUI" style="z-index: 3;;position:fixed;right: 10px;bottom:10px;width: 40px;height: 40px;border-radius: 20px;">
+    <svg t="1669014767555" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1382" width="40" height="40"><path d="M512 128c11.616 0 23.376 0.544 35.136 1.632l66.368 69.632 19.552 20.512 28.32-0.688 96.176-2.304a386.56 386.56 0 0 1 49.68 49.68l-2.304 96.176-0.688 28.32 20.512 19.552 69.632 66.368a382 382 0 0 1-0.016 70.256l-69.632 66.368-20.512 19.552 0.688 28.32 2.304 96.176a386.56 386.56 0 0 1-49.68 49.68l-96.176-2.304-28.32-0.688-19.552 20.512-66.368 69.648a382 382 0 0 1-70.256-0.032l-66.368-69.648-19.552-20.512-28.32 0.688-96.176 2.304a386.56 386.56 0 0 1-49.68-49.68l2.304-96.176 0.688-28.32-20.512-19.552-69.632-66.368a382 382 0 0 1 0.016-70.24l69.632-66.368 20.512-19.552-0.688-28.32-2.304-96.176a386.56 386.56 0 0 1 49.68-49.68l96.176 2.304 28.32 0.688 19.552-20.512 66.368-69.632A387.056 387.056 0 0 1 512 128m0 576c105.872 0 192-86.128 192-192s-86.128-192-192-192-192 86.128-192 192 86.128 192 192 192m0-640c-22.288 0-44.176 1.68-65.6 4.832l-82.224 86.288-119.152-2.864a450.768 450.768 0 0 0-92.768 92.768l2.864 119.152L68.832 446.4A450.304 450.304 0 0 0 64 512c0 22.288 1.68 44.176 4.832 65.6l86.288 82.224-2.864 119.152a450.384 450.384 0 0 0 92.768 92.768l119.152-2.864 82.24 86.288c21.408 3.152 43.296 4.832 65.584 4.832s44.176-1.68 65.6-4.832l82.24-86.288 119.152 2.864a450.768 450.768 0 0 0 92.768-92.768l-2.864-119.152 86.288-82.224a450.304 450.304 0 0 0-0.016-131.2l-86.288-82.224 2.864-119.152a450.768 450.768 0 0 0-92.768-92.768l-119.152 2.864L577.6 68.832A450.304 450.304 0 0 0 512 64z m0 576a128 128 0 1 1 0-256 128 128 0 0 1 0 256z" p-id="1383" fill="#ffffff"></path></svg>
+</div>
+<div id="mainpage"><div style="display: flex;height: 41px;"><div class="settings" onclick="cho(1)" style="margin-left:var(--border-re)">配置设置</div><div class="settings" onclick="cho(2)">插件管理</div><div class="settings" onclick="cho(3)">导出设置</div></div><div style="overflow: auto;background-color: #f1f0f5;width: 100%;height: calc(100% - 41px);border-bottom-left-radius: var(--border-re);border-bottom-right-radius: var(--border-re);"></div></div>
+<div id="tohide" style="width:100%;height: 100%;position: fixed;top: 0px;left: 0px;" onclick="document.querySelector('#userUI').click()"></div>
+<p id="notc" style="position: fixed;top: 40px;top: 0px;padding:10px 20px;width: fit-content;border-radius: var(--border-re);border: 1px solid rgb(122, 122, 122);"></p>
+</body>
+</html>
