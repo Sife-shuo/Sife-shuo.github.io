@@ -24,6 +24,7 @@ config=JSON.parse(localStorage.getItem("config"));
 truepos=[];
 not=[];
 window.onload=()=>{
+    document.body.style.scrollBehavior='smooth';
     document.body.style.backgroundImage='url('+config['backimg']+')';document.body.style.backgroundSize='cover';
     document.body.style.setProperty('--border-re',config["border-re"]);document.body.style.setProperty('--plugtitle',config['plugtitle']);
     config["w"]=config['last-w']?config['last-w']:(document.body.clientWidth-document.body.clientWidth%90)/90;
