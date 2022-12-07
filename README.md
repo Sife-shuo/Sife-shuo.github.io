@@ -5,6 +5,8 @@
 
 自由度超高的标签页，允许您自定义动态内容（称为插件）.
 
+使用瀑布流布局，可以自适应设备.
+
 每个Taber会包含一个config对象，会有一个本地的config存储
 config和插件（plugin）的格式如下（注释中的为可选内容）.
 
@@ -51,3 +53,6 @@ plugin:{
   }
 }
 ```
+
+Taber效果示例：
+![效果示例](https://sife-shuo.github.io/pictures/1.00.010.png)
