@@ -53,6 +53,11 @@ plugin:{
   }
 }
 ```
+该插件效果：
+
+![效果示例](https://sife-shuo.github.io/pictures/1.00.012.png)
+
 
 Taber效果示例：
+
 ![效果示例](https://sife-shuo.github.io/pictures/1.00.010.png)
