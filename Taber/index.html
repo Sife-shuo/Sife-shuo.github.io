@@ -91,7 +91,7 @@ function changeall(){
     document.querySelector('.container').style.height='100%';
     document.querySelector('.container').style.margin= '0 auto';
     document.querySelector('.container').style.marginTop=((document.body.clientWidth-config['w']*90)/2)<30?'30px':(document.body.clientWidth-config['w']*90)/2+'px';
-    config.op.map((e,q)=>{if(e[0]<=Number(config['w']) && !document.getElementById(getid(q))){addpluglist(config.plug[q],e[0],e[1],e[2])}else if(e[0]>Number(config['w'])){not.push(getid(q)+'加载错误:WidError')}});
+    config.op.map((e,q)=>{if(e[0]<=Number(config['w']) && !document.getElementById(getid(q))){addplug(config.plug[q],e[0],e[1],e[2])}else if(e[0]>Number(config['w'])){not.push(getid(q)+'加载错误:WidError')}});
     truepos=[];
     truepos.push(new Array(config['w']).fill(0));
     document.querySelectorAll('.container li').forEach((e,q)=>{if(Number(e.style.width.replace('px',''))>Number(document.querySelector('.container').style.width.replace('px',''))){document.querySelector('.container').removeChild(e);not.push(e.id+'加载错误:WidError')}else{
@@ -100,7 +100,7 @@ function changeall(){
         animate(e,{'left':(cw-1)*90+'px','top':(ch-1)*90+'px'},'1s');
         changechair(cw,ch,w,h,1);
     }});
-    document.getElementById('notc').style.left='calc(50% - '+(document.getElementById('notc').offsetWidth)/2+'px'+')';
+    document.getElementById('notc').style.left='calc(50% - '+(document.getElementById('notc').offsetWidth)/2+'px'+')';not=Array.from(new Set(not));
     not.length==0?notice('插件全部加载成功','#e3fdcc'):fnnotice=setInterval(function(){if(not.length==0){clearInterval(fnnotice)}else{notice(not[0],'#ffc0bd');not.shift()}},2000);
 };
 function addplug(plug,w,h,nameb){
