@@ -85,15 +85,16 @@ function bind(plug,x,y,w,h,nameb){
 };
 function getid(num){var pluging=JSON.parse(config.plug[num]);return pluging['name']+'_'+pluging['author']+'_'+pluging['version'];};
 function changeall(){
-    truepos=[];
     not=[];
     config["w"]=(document.body.clientWidth-document.body.clientWidth%90)/90;
-    truepos.push(new Array(config['w']).fill(0));
     document.querySelector('.container').style.width=config['w']*90+'px';
     document.querySelector('.container').style.height='100%';
     document.querySelector('.container').style.margin= '0 auto';
     document.querySelector('.container').style.marginTop=((document.body.clientWidth-config['w']*90)/2)<30?'30px':(document.body.clientWidth-config['w']*90)/2+'px';
-    document.querySelectorAll('.container li').forEach((e,q)=>{if(Number(e.style.width.replace('px',''))>Number(document.querySelector('.container').style.width.replace('px',''))){document.querySelector('.container').removeChild(e);not.push(getid(q)+'加载错误:WidError')}else{
+    config.op.map((e,q)=>{if(e[0]<=Number(config['w']) && !document.getElementById(getid(q))){addpluglist(config.plug[q],e[0],e[1],e[2])}else{not.push(getid(q)+'加载错误:WidError')}});
+    truepos=[];
+    truepos.push(new Array(config['w']).fill(0));
+    document.querySelectorAll('.container li').forEach((e,q)=>{if(Number(e.style.width.replace('px',''))>Number(document.querySelector('.container').style.width.replace('px',''))){document.querySelector('.container').removeChild(e);not.push(e.id+'加载错误:WidError')}else{
         var [w,h]=[Number(e.style.width.replace('px',''))/90,Number(e.style.height.replace('px',''))/90];
         var [cw,ch]=findchair(w,h);
         animate(e,{'left':(cw-1)*90+'px','top':(ch-1)*90+'px'},'1s');
