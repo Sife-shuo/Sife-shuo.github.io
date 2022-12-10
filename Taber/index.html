@@ -8,7 +8,8 @@ iframe{border: 0;}li{list-style: none;}ul{padding: 0;position:relative;}
 #mainpage{z-index:-1;width:70%;height: 70%;position:fixed;left: 15%;top: 15%;background-color: white;border-radius: var(--border-re);opacity:0;transition: opacity 0.1s}
 .settings{-webkit-user-select:none;user-select:none;width: 130px;text-align: center;height: 21px;padding-top: 10px;padding-bottom: 10px;transition: border-bottom 0.1s,color 0.1s;}.settings:hover{background-color: rgb(230, 230, 230);color: rgb(44, 44, 44);}
 #tohide{background-color: black;opacity: 0;display: none;transition: opacity 0.1s;z-index: -1;}.message{width:calc(92.5% - 40px);margin:20px auto 0 auto;padding: 25px;background-color: white;border-radius: var(--border-re);}
-#notc{margin-top: -100px;}li > div:nth-child(2){white-space: nowrap;}.plug_e{padding: 20px;background-color: white;margin-right: 20px;margin-left: 20px;margin-top: 20px;border-radius: var(--border-re);}
+#notc{margin-top: -100px;}li > div:nth-child(2){white-space: nowrap;}.plug_e{padding: 20px;background-color: white;margin-right: 20px;margin-left: 20px;margin-bottom: 20px;border-radius: var(--border-re);}
+#plug_h span{margin-left: calc(20% - 10px);border-bottom: 2px solid #0000ff;}#plu{margin-left: 20px;}#plugli{width: 50%;border-right: 1px solid gray;overflow: auto;height: calc(100% - 61px - 41px);}
 </style>
 <script>
 if(!localStorage.getItem("config")){
@@ -24,6 +25,7 @@ config=JSON.parse(localStorage.getItem("config"));
 truepos=[];
 not=[];
 window.onload=()=>{
+    document.getElementById("sright").style.display = "none";
     document.body.style.backgroundImage='url('+config['backimg']+')';document.body.style.backgroundSize='cover';
     document.body.style.setProperty('--border-re',config["border-re"]);document.body.style.setProperty('--plugtitle',config['plugtitle']);
     config["w"]=config['last-w']?config['last-w']:(document.body.clientWidth-document.body.clientWidth%90)/90;
@@ -53,7 +55,7 @@ window.onload=()=>{
             document.querySelector('#userUI').click()
         }
     }
-    document.body.onresize=()=>{location.assign(location.href)};
+    document.body.onresize=()=>{changeall()};
     config['plug'].map((e,p)=>{try{addplug(e,config['op'][p][0],config['op'][p][1],config['op'][p][2])}catch(err){var pluging=JSON.parse(e);
     var u=pluging['name']+'_'+pluging['author']+'_'+pluging['version'];not.push(u+' 加载错误:'+err)}});
     document.getElementById('notc').style.left='calc(50% - '+(document.getElementById('notc').offsetWidth)/2+'px'+')';
@@ -81,13 +83,33 @@ function bind(plug,x,y,w,h,nameb){
             changechair(x,y,w,h,1);}
     }}else{throw 'PosError'}}else{throw "WidError"}
 };
+function getid(num){var pluging=JSON.parse(config.plug[num]);return pluging['name']+'_'+pluging['author']+'_'+pluging['version'];};
+function changeall(){
+    truepos=[];
+    not=[];
+    config["w"]=(document.body.clientWidth-document.body.clientWidth%90)/90;
+    truepos.push(new Array(config['w']).fill(0));
+    document.querySelector('.container').style.width=config['w']*90+'px';
+    document.querySelector('.container').style.height='100%';
+    document.querySelector('.container').style.margin= '0 auto';
+    document.querySelector('.container').style.marginTop=((document.body.clientWidth-config['w']*90)/2)<30?'30px':(document.body.clientWidth-config['w']*90)/2+'px';
+    document.querySelectorAll('.container li').forEach((e,q)=>{if(Number(e.style.width.replace('px',''))>Number(document.querySelector('.container').style.width.replace('px',''))){document.querySelector('.container').removeChild(e);not.push(getid(q)+'加载错误:WidError')}else{
+        var [w,h]=[Number(e.style.width.replace('px',''))/90,Number(e.style.height.replace('px',''))/90];
+        var [cw,ch]=findchair(w,h);
+        animate(e,{'left':(cw-1)*90+'px','top':(ch-1)*90+'px'},'1s');
+        changechair(cw,ch,w,h,1);
+    }});
+    document.getElementById('notc').style.left='calc(50% - '+(document.getElementById('notc').offsetWidth)/2+'px'+')';
+    not.length==0?notice('插件全部加载成功','#e3fdcc'):fnnotice=setInterval(function(){if(not.length==0){clearInterval(fnnotice)}else{notice(not[0],'#ffc0bd');not.shift()}},2000);
+};
 function addplug(plug,w,h,nameb){
     var [x,y]=findchair(w,h);
     try{bind(plug,x,y,w,h,nameb)}catch(err){console.log(err)}
 };
 function addpluglist(plug,w,h,nameb){
     config['plug'].push([plug]);config['op'].push([w,h,nameb]);addplug(plug,w,h,nameb)
-}
+};
+function removeplug(num){config.plug.removething(num);config.op.removething(num);saveconfig();document.querySelector('.container').removeChild(document.getElementById(getid(num)));changeall();}
 /*
 window.frameElement.getAttribute('w') to getparent width
 function moveplug(plug,x,y,speed){
@@ -159,6 +181,7 @@ Array.prototype.remove = function(v) {//v is an Array
     this.map(e=>{v.indexOf(e)==-1?newa.push(e):void(0)})
     return newa;
 };
+Array.prototype.removething = function(v) {this.splice(v, 1);return this;}; 
 function subcon(thi){
     console.log(thi);
     const fileReader = new FileReader();fileReader.readAsText(thi.files[0],'utf8');fileReader.onload=()=>{localStorage.setItem("config",fileReader.result);location.assign(location.href);}
@@ -172,7 +195,7 @@ function cho(n){document.querySelectorAll('div.settings').forEach(e=>{e.style.bo
 document.querySelector('div.settings:nth-child('+String(n)+')').style.borderBottom='3px solid blue';
 document.querySelector('div.settings:nth-child('+String(n)+')').style.color='blue';
 if(n==1){var willconfig=config;Reflect.deleteProperty(willconfig,'w');document.querySelector('#mainpage > div:nth-child(2)').innerHTML='<div class="message"><div style="text-align:center"><strong>导入配置</strong></div><input id="user-config" onchange="subcon(this)" type="file"/></div><button id="use_c" onclick=\'dowloadconfig()\' style="margin:20px;padding:20px;background:white;border-radius: var(--border-re);border:0;">导出配置</button>'}
-else if(n==2){var f=document.querySelector('#mainpage > div:nth-child(2)');f.innerHTML="";config.plug.map(e=>{var plugin=JSON.parse(e);var u=document.createElement('div');u.innerText='id:'+plugin['name']+'_'+plugin['author']+'_'+plugin['version'];u.className="plug_e";f.appendChild(u)})}
+else if(n==2){document.querySelector('#mainpage > div:nth-child(2)').innerHTML="<div class=\"plug_e\" id=\"plug_h\" style=\"margin-bottom:20px;margin-top:20px;\"><span>name</span><span>author</span><span>version</span></div><div id=\"plugli\"></div>";var f=document.querySelector('#plugli');config.plug.map((e,q)=>{var plugin=JSON.parse(e);var u=document.createElement('div');u.innerHTML='<span id="plu">'+plugin['name']+'</span><span id="plu">'+plugin['author']+'</span><span id="plu">'+plugin['version']+"</span><button onclick=\"removeplug("+q+")\">Delete</button>";u.className="plug_e";f.appendChild(u)})}
 };
 function notice(str,colors){document.getElementById('notc').style.backgroundColor=colors;animate(document.getElementById('notc'),{'margin-top':'40px'},'0.5s');document.getElementById('notc').innerText=str;document.getElementById('notc').style.left='calc(50% - '+(document.getElementById('notc').offsetWidth)/2+'px'+')';var s=setTimeout(function(){animate(document.getElementById('notc'),{'margin-top':'-100px'},'0.5s');clearTimeout(s)},3000);}
 function dowloadconfig(){
@@ -182,6 +205,13 @@ function dowloadconfig(){
     element.setAttribute('download', 'config.json');
     element.click();
     return true;
+};
+function sr(e,html){
+    document.getElementById("sright").innerHTML=html;
+    document.getElementById("sright").style.display = "block";
+    document.getElementById("sright").style.left = e.clientX + "px";
+    document.getElementById("sright").style.top = e.clientY + "px";
+    return false;
 }
 </script>
 </head>
@@ -190,8 +220,9 @@ function dowloadconfig(){
 <div id="userUI" style="z-index: 3;;position:fixed;right: 10px;bottom:10px;width: 40px;height: 40px;border-radius: 20px;">
     <svg t="1669014767555" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1382" width="40" height="40"><path d="M512 128c11.616 0 23.376 0.544 35.136 1.632l66.368 69.632 19.552 20.512 28.32-0.688 96.176-2.304a386.56 386.56 0 0 1 49.68 49.68l-2.304 96.176-0.688 28.32 20.512 19.552 69.632 66.368a382 382 0 0 1-0.016 70.256l-69.632 66.368-20.512 19.552 0.688 28.32 2.304 96.176a386.56 386.56 0 0 1-49.68 49.68l-96.176-2.304-28.32-0.688-19.552 20.512-66.368 69.648a382 382 0 0 1-70.256-0.032l-66.368-69.648-19.552-20.512-28.32 0.688-96.176 2.304a386.56 386.56 0 0 1-49.68-49.68l2.304-96.176 0.688-28.32-20.512-19.552-69.632-66.368a382 382 0 0 1 0.016-70.24l69.632-66.368 20.512-19.552-0.688-28.32-2.304-96.176a386.56 386.56 0 0 1 49.68-49.68l96.176 2.304 28.32 0.688 19.552-20.512 66.368-69.632A387.056 387.056 0 0 1 512 128m0 576c105.872 0 192-86.128 192-192s-86.128-192-192-192-192 86.128-192 192 86.128 192 192 192m0-640c-22.288 0-44.176 1.68-65.6 4.832l-82.224 86.288-119.152-2.864a450.768 450.768 0 0 0-92.768 92.768l2.864 119.152L68.832 446.4A450.304 450.304 0 0 0 64 512c0 22.288 1.68 44.176 4.832 65.6l86.288 82.224-2.864 119.152a450.384 450.384 0 0 0 92.768 92.768l119.152-2.864 82.24 86.288c21.408 3.152 43.296 4.832 65.584 4.832s44.176-1.68 65.6-4.832l82.24-86.288 119.152 2.864a450.768 450.768 0 0 0 92.768-92.768l-2.864-119.152 86.288-82.224a450.304 450.304 0 0 0-0.016-131.2l-86.288-82.224 2.864-119.152a450.768 450.768 0 0 0-92.768-92.768l-119.152 2.864L577.6 68.832A450.304 450.304 0 0 0 512 64z m0 576a128 128 0 1 1 0-256 128 128 0 0 1 0 256z" p-id="1383" fill="#ffffff"></path></svg>
 </div>
-<div id="mainpage"><div style="display: flex;height: 41px;"><div class="settings" onclick="cho(1)" style="margin-left:var(--border-re)">配置设置</div><div class="settings" onclick="cho(2)">插件管理</div><div class="settings" onclick="cho(3)">导出设置</div></div><div style="overflow: auto;background-color: #f1f0f5;width: 100%;height: calc(100% - 41px);border-bottom-left-radius: var(--border-re);border-bottom-right-radius: var(--border-re);"></div></div>
+<div id="mainpage"><div style="display: flex;height: 41px;"><div class="settings" onclick="cho(1)" style="margin-left:var(--border-re)">配置设置</div><div class="settings" onclick="cho(2)">插件管理</div><div class="settings" onclick="cho(3)">导出设置</div></div><div style="overflow: hidden;background-color: #f1f0f5;width: 100%;height: calc(100% - 41px);border-bottom-left-radius: var(--border-re);border-bottom-right-radius: var(--border-re);"></div></div>
 <div id="tohide" style="width:100%;height: 100%;position: fixed;top: 0px;left: 0px;" onclick="document.querySelector('#userUI').click()"></div>
 <p id="notc" style="position: fixed;top: 40px;top: 0px;padding:10px 20px;width: fit-content;border-radius: var(--border-re);border: 1px solid rgb(122, 122, 122);"></p>
+<div id="sright"></div>
 </body>
 </html>
