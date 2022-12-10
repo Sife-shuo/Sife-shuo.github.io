@@ -8,7 +8,7 @@ iframe{border: 0;}li{list-style: none;}ul{padding: 0;position:relative;}
 #mainpage{z-index:-1;width:70%;height: 70%;position:fixed;left: 15%;top: 15%;background-color: white;border-radius: var(--border-re);opacity:0;transition: opacity 0.1s}
 .settings{-webkit-user-select:none;user-select:none;width: 130px;text-align: center;height: 21px;padding-top: 10px;padding-bottom: 10px;transition: border-bottom 0.1s,color 0.1s;}.settings:hover{background-color: rgb(230, 230, 230);color: rgb(44, 44, 44);}
 #tohide{background-color: black;opacity: 0;display: none;transition: opacity 0.1s;z-index: -1;}.message{width:calc(92.5% - 40px);margin:20px auto 0 auto;padding: 25px;background-color: white;border-radius: var(--border-re);}
-#notc{margin-top: -100px;}li > div:nth-child(2){white-space: nowrap;}
+#notc{margin-top: -100px;}li > div:nth-child(2){white-space: nowrap;}.plug_e{padding: 20px;background-color: white;margin-right: 20px;margin-left: 20px;margin-top: 20px;border-radius: var(--border-re);}
 </style>
 <script>
 if(!localStorage.getItem("config")){
@@ -171,8 +171,8 @@ function saveconfig(){
 function cho(n){document.querySelectorAll('div.settings').forEach(e=>{e.style.borderBottom='';e.style.color='black'});
 document.querySelector('div.settings:nth-child('+String(n)+')').style.borderBottom='3px solid blue';
 document.querySelector('div.settings:nth-child('+String(n)+')').style.color='blue';
-if(n==1){document.querySelector('#mainpage > div:nth-child(2)').innerHTML='<div class="message"><div style="text-align:center"><strong>导入配置</strong></div><input id="user-config" onchange="subcon(this)" type="file"/></div>'}
-else if(n==3){var willconfig=config;Reflect.deleteProperty(willconfig,'w');document.querySelector('#mainpage > div:nth-child(2)').innerHTML='<button id="use_c" onclick=\'dowloadconfig()\' style="margin:20px;padding:20px;background:white;border-radius: var(--border-re);">导出配置</button>'}
+if(n==1){var willconfig=config;Reflect.deleteProperty(willconfig,'w');document.querySelector('#mainpage > div:nth-child(2)').innerHTML='<div class="message"><div style="text-align:center"><strong>导入配置</strong></div><input id="user-config" onchange="subcon(this)" type="file"/></div><button id="use_c" onclick=\'dowloadconfig()\' style="margin:20px;padding:20px;background:white;border-radius: var(--border-re);border:0;">导出配置</button>'}
+else if(n==2){var f=document.querySelector('#mainpage > div:nth-child(2)');f.innerHTML="";config.plug.map(e=>{var plugin=JSON.parse(e);var u=document.createElement('div');u.innerText='id:'+plugin['name']+'_'+plugin['author']+'_'+plugin['version'];u.className="plug_e";f.appendChild(u)})}
 };
 function notice(str,colors){document.getElementById('notc').style.backgroundColor=colors;animate(document.getElementById('notc'),{'margin-top':'40px'},'0.5s');document.getElementById('notc').innerText=str;document.getElementById('notc').style.left='calc(50% - '+(document.getElementById('notc').offsetWidth)/2+'px'+')';var s=setTimeout(function(){animate(document.getElementById('notc'),{'margin-top':'-100px'},'0.5s');clearTimeout(s)},3000);}
 function dowloadconfig(){
