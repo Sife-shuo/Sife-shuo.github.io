@@ -6,12 +6,13 @@
 <style>body{height: 100%;margin: 0;background-color: aliceblue;--border-re:16px;--space:none;--plugtitle:white;transition: background-image 0.3s;background-position: center center;background-repeat: no-repeat;background-attachment: fixed;background-size: cover;}
 iframe{border: 0;}li{list-style: none;}ul{padding: 0;position:relative;}
 #mainpage{z-index:-1;width:70%;height: 70%;position:fixed;left: 15%;top: 15%;background-color: white;border-radius: var(--border-re);opacity:0;transition: opacity 0.1s}
-.settings{-webkit-user-select:none;user-select:none;width: 130px;text-align: center;height: 21px;padding-top: 10px;padding-bottom: 10px;transition: border-bottom 0.1s,color 0.1s;}.settings:hover{background-color: rgb(230, 230, 230);color: rgb(44, 44, 44);}
+.settings{-webkit-user-select:none;user-select:none;width: fit-content;padding: 10px;text-align: center;height: 21px;transition: border-bottom 0.1s,color 0.1s;}.settings:hover{background-color: rgb(230, 230, 230);color: rgb(44, 44, 44);}
 #tohide{background-color: black;opacity: 0;display: none;transition: opacity 0.1s;z-index: -1;}.message{width:calc(92.5% - 40px);margin:20px auto 0 auto;padding: 25px;background-color: white;border-radius: var(--border-re);}
 #notc{margin-top: -100px;}li > div:nth-child(2){white-space: nowrap;}.plug_e{padding: 20px;background-color: white;margin-right: 20px;margin-left: 20px;margin-bottom: 20px;border-radius: var(--border-re);}
 #plug_h span{margin-left: calc(20% - 10px);border-bottom: 2px solid #0000ff;}#plu{margin-left: 20px;}#plugli{width: 50%;border-right: 1px solid gray;overflow: auto;height: calc(100% - 61px - 41px);}
 </style>
 <script>
+var langs=window.navigator.language=='zh-CN'?['插件全部加载成功','加载错误','导出配置','配置设置','插件管理','导入配置']:['All plug-ins loaded successfully','load error','export config','config setting','plug in management','import config'];
 if(!localStorage.getItem("config")){
     localStorage.setItem("config",JSON.stringify(
         {"border-re":'16px','backimg':'https://sife-shuo.github.io/pictures/1.00.011.png','plugtitle':'white','plug':[["{\"name\":\"Setting\",\"author\":\"Sife\",\"version\":\"1.0.0\",\"size\":{\"w1h1\":\"<body style=\\\"margin:0;width:60px;height:60px;background-color:blue;overflow:hidden\\\" onclick=\\\"window.parent.document.querySelector('#userUI').click()\\\"><img src='https://sife-shuo.github.io/Taber/setting.png' style=\\\"width:50px;height:50px;margin:5px 5px\\\"></body>\"}}"]],'op':[[1,1,1]]}
@@ -54,12 +55,15 @@ window.onload=()=>{
         if(event.ctrlKey && event.keyCode==88){//Ctrl+X
             document.querySelector('#userUI').click()
         }
-    }
-    document.body.onresize=()=>{changeall()};
+    };
+    document.querySelector('div.settings:nth-child(1)').innerText=langs[3];
+    document.querySelector('div.settings:nth-child(2)').innerText=langs[4];
+    document.querySelector('div.settings:nth-child(3)').innerText=langs[2];
+    document.body.onresize=()=>{changeall(1)};
     config['plug'].map((e,p)=>{try{addplug(e,config['op'][p][0],config['op'][p][1],config['op'][p][2])}catch(err){var pluging=JSON.parse(e);
-    var u=pluging['name']+'_'+pluging['author']+'_'+pluging['version'];not.push(u+' 加载错误:'+err)}});
+    var u=pluging['name']+'_'+pluging['author']+'_'+pluging['version'];not.push(u+langs[1]+':'+err)}});
     document.getElementById('notc').style.left='calc(50% - '+(document.getElementById('notc').offsetWidth)/2+'px'+')';
-    not.length==0?notice('插件全部加载成功','#e3fdcc'):fnnotice=setInterval(function(){if(not.length==0){clearInterval(fnnotice)}else{notice(not[0],'#ffc0bd');not.shift()}},2000);
+    not.length==0?notice(langs[0],'#e3fdcc'):fnnotice=setInterval(function(){if(not.length==0){clearInterval(fnnotice)}else{notice(not[0],'#ffc0bd');not.shift()}},2000);
 }
 function bind(plug,x,y,w,h,nameb){
     if(x+w-1<=config["w"]){
@@ -84,24 +88,24 @@ function bind(plug,x,y,w,h,nameb){
     }}else{throw 'PosError'}}else{throw "WidError"}
 };
 function getid(num){var pluging=JSON.parse(config.plug[num]);return pluging['name']+'_'+pluging['author']+'_'+pluging['version'];};
-function changeall(){
+function changeall(old){
     not=[];
     config["w"]=(document.body.clientWidth-document.body.clientWidth%90)/90;
     document.querySelector('.container').style.width=config['w']*90+'px';
     document.querySelector('.container').style.height='100%';
     document.querySelector('.container').style.margin= '0 auto';
     document.querySelector('.container').style.marginTop=((document.body.clientWidth-config['w']*90)/2)<30?'30px':(document.body.clientWidth-config['w']*90)/2+'px';
-    config.op.map((e,q)=>{if(e[0]<=Number(config['w']) && !document.getElementById(getid(q))){addplug(config.plug[q],e[0],e[1],e[2])}else if(e[0]>Number(config['w'])){not.push(getid(q)+'加载错误:WidError')}});
+    old==1?config.op.map((e,q)=>{if(e[0]<=Number(config['w']) && !document.getElementById(getid(q))){addplug(config.plug[q],e[0],e[1],e[2])}else if(e[0]>Number(config['w'])){not.push(getid(q)+langs[1]+':WidError')}}):void(0);
     truepos=[];
     truepos.push(new Array(config['w']).fill(0));
-    document.querySelectorAll('.container li').forEach((e,q)=>{if(Number(e.style.width.replace('px',''))>Number(document.querySelector('.container').style.width.replace('px',''))){document.querySelector('.container').removeChild(e);not.push(e.id+'加载错误:WidError')}else{
+    document.querySelectorAll('.container li').forEach((e,q)=>{if(Number(e.style.width.replace('px',''))>Number(document.querySelector('.container').style.width.replace('px',''))){document.querySelector('.container').removeChild(e);not.push(e.id+langs[1]+':WidError')}else{
         var [w,h]=[Number(e.style.width.replace('px',''))/90,Number(e.style.height.replace('px',''))/90];
         var [cw,ch]=findchair(w,h);
         animate(e,{'left':(cw-1)*90+'px','top':(ch-1)*90+'px'},'1s');
         changechair(cw,ch,w,h,1);
     }});
     document.getElementById('notc').style.left='calc(50% - '+(document.getElementById('notc').offsetWidth)/2+'px'+')';not=Array.from(new Set(not));
-    not.length==0?notice('插件全部加载成功','#e3fdcc'):fnnotice=setInterval(function(){if(not.length==0){clearInterval(fnnotice)}else{notice(not[0],'#ffc0bd');not.shift()}},2000);
+    not.length==0?notice(langs[0],'#e3fdcc'):fnnotice=setInterval(function(){if(not.length==0){clearInterval(fnnotice)}else{notice(not[0],'#ffc0bd');not.shift()}},2000);
 };
 function addplug(plug,w,h,nameb){
     var [x,y]=findchair(w,h);
@@ -195,7 +199,7 @@ function saveconfig(){
 function cho(n){document.querySelectorAll('div.settings').forEach(e=>{e.style.borderBottom='';e.style.color='black'});
 document.querySelector('div.settings:nth-child('+String(n)+')').style.borderBottom='3px solid blue';
 document.querySelector('div.settings:nth-child('+String(n)+')').style.color='blue';
-if(n==1){var willconfig=config;Reflect.deleteProperty(willconfig,'w');document.querySelector('#mainpage > div:nth-child(2)').innerHTML='<div class="message"><div style="text-align:center"><strong>导入配置</strong></div><input id="user-config" onchange="subcon(this)" type="file"/></div><button id="use_c" onclick=\'dowloadconfig()\' style="margin:20px;padding:20px;background:white;border-radius: var(--border-re);border:0;">导出配置</button>'}
+if(n==1){var willconfig=config;Reflect.deleteProperty(willconfig,'w');document.querySelector('#mainpage > div:nth-child(2)').innerHTML='<div class="message"><div style="text-align:center"><strong>'+langs[5]+'</strong></div><input id="user-config" onchange="subcon(this)" type="file"/></div><button id="use_c" onclick=\'dowloadconfig()\' style="margin:20px;padding:20px;background:white;border-radius: var(--border-re);border:0;">'+langs[2]+'</button>'}
 else if(n==2){document.querySelector('#mainpage > div:nth-child(2)').innerHTML="<div class=\"plug_e\" id=\"plug_h\" style=\"margin-bottom:20px;margin-top:20px;\"><span>name</span><span>author</span><span>version</span></div><div id=\"plugli\"></div>";var f=document.querySelector('#plugli');config.plug.map((e,q)=>{var plugin=JSON.parse(e);var u=document.createElement('div');u.innerHTML='<span id="plu">'+plugin['name']+'</span><span id="plu">'+plugin['author']+'</span><span id="plu">'+plugin['version']+"</span><button onclick=\"removeplug(\'"+plugin['name']+"_"+plugin['author']+'_'+plugin['version']+'\','+q+")\">Delete</button>";u.className="plug_e";f.appendChild(u)})}
 };
 function notice(str,colors){document.getElementById('notc').style.backgroundColor=colors;animate(document.getElementById('notc'),{'margin-top':'40px'},'0.5s');document.getElementById('notc').innerText=str;document.getElementById('notc').style.left='calc(50% - '+(document.getElementById('notc').offsetWidth)/2+'px'+')';var s=setTimeout(function(){animate(document.getElementById('notc'),{'margin-top':'-100px'},'0.5s');clearTimeout(s)},3000);}
@@ -221,7 +225,7 @@ function sr(e,html){
 <div id="userUI" style="z-index: 3;;position:fixed;right: 10px;bottom:10px;width: 40px;height: 40px;border-radius: 20px;">
     <svg t="1669014767555" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1382" width="40" height="40"><path d="M512 128c11.616 0 23.376 0.544 35.136 1.632l66.368 69.632 19.552 20.512 28.32-0.688 96.176-2.304a386.56 386.56 0 0 1 49.68 49.68l-2.304 96.176-0.688 28.32 20.512 19.552 69.632 66.368a382 382 0 0 1-0.016 70.256l-69.632 66.368-20.512 19.552 0.688 28.32 2.304 96.176a386.56 386.56 0 0 1-49.68 49.68l-96.176-2.304-28.32-0.688-19.552 20.512-66.368 69.648a382 382 0 0 1-70.256-0.032l-66.368-69.648-19.552-20.512-28.32 0.688-96.176 2.304a386.56 386.56 0 0 1-49.68-49.68l2.304-96.176 0.688-28.32-20.512-19.552-69.632-66.368a382 382 0 0 1 0.016-70.24l69.632-66.368 20.512-19.552-0.688-28.32-2.304-96.176a386.56 386.56 0 0 1 49.68-49.68l96.176 2.304 28.32 0.688 19.552-20.512 66.368-69.632A387.056 387.056 0 0 1 512 128m0 576c105.872 0 192-86.128 192-192s-86.128-192-192-192-192 86.128-192 192 86.128 192 192 192m0-640c-22.288 0-44.176 1.68-65.6 4.832l-82.224 86.288-119.152-2.864a450.768 450.768 0 0 0-92.768 92.768l2.864 119.152L68.832 446.4A450.304 450.304 0 0 0 64 512c0 22.288 1.68 44.176 4.832 65.6l86.288 82.224-2.864 119.152a450.384 450.384 0 0 0 92.768 92.768l119.152-2.864 82.24 86.288c21.408 3.152 43.296 4.832 65.584 4.832s44.176-1.68 65.6-4.832l82.24-86.288 119.152 2.864a450.768 450.768 0 0 0 92.768-92.768l-2.864-119.152 86.288-82.224a450.304 450.304 0 0 0-0.016-131.2l-86.288-82.224 2.864-119.152a450.768 450.768 0 0 0-92.768-92.768l-119.152 2.864L577.6 68.832A450.304 450.304 0 0 0 512 64z m0 576a128 128 0 1 1 0-256 128 128 0 0 1 0 256z" p-id="1383" fill="#ffffff"></path></svg>
 </div>
-<div id="mainpage"><div style="display: flex;height: 41px;"><div class="settings" onclick="cho(1)" style="margin-left:var(--border-re)">配置设置</div><div class="settings" onclick="cho(2)">插件管理</div><div class="settings" onclick="cho(3)">导出设置</div></div><div style="overflow: hidden;background-color: #f1f0f5;width: 100%;height: calc(100% - 41px);border-bottom-left-radius: var(--border-re);border-bottom-right-radius: var(--border-re);"></div></div>
+<div id="mainpage"><div style="display: flex;height: 41px;"><div class="settings" onclick="cho(1)" style="margin-left:var(--border-re)"></div><div class="settings" onclick="cho(2)"></div><div class="settings" onclick="cho(3)"></div></div><div style="overflow: hidden;background-color: #f1f0f5;width: 100%;height: calc(100% - 41px);border-bottom-left-radius: var(--border-re);border-bottom-right-radius: var(--border-re);"></div></div>
 <div id="tohide" style="width:100%;height: 100%;position: fixed;top: 0px;left: 0px;" onclick="document.querySelector('#userUI').click()"></div>
 <p id="notc" style="position: fixed;top: 40px;top: 0px;padding:10px 20px;width: fit-content;border-radius: var(--border-re);border: 1px solid rgb(122, 122, 122);"></p>
 <div id="sright"></div>

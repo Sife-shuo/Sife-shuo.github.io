@@ -1,16 +1,14 @@
 # Sife-shuo.github.io
-[Chinese version](https://github.com/Sife-shuo/Sife-shuo.github.io/blob/main/README-CN.md)
 - ### **Taber**
 ## Taber
-> Online demo address : https://sife-shuo.github.io/Taber/
+> 在线demo地址 : https://sife-shuo.github.io/Taber/
 
-The tab with super high degree of freedom allows you to customize dynamic content (called plug-in).
+自由度超高的标签页，允许您自定义动态内容（称为插件）.
 
-With waterfall flow layout, the equipment can be adaptive.
+使用瀑布流布局，可以自适应设备.
 
-Each Taber will contain a config object and a local config store.
-
-The format of config and plugin is as follows (optional in comments)
+每个Taber会包含一个config对象，会有一个本地的config存储
+config和插件（plugin）的格式如下（注释中的为可选内容）.
 
 ``` javascript
 config:{
@@ -31,20 +29,20 @@ plugin:{
   //"space":true
 }
 ```
-```plugin.size```  ：Plug in size, each 1 represents represents a plug-in bit, i.e. 90px(Note: After calculation, it is the size of the parent element of the plug-in, not the size of the plug-in content. The actual available content size is ```(w*90-30)``` px and ```(h*90-30)``` px),You can specify an unlimited size. For example, when the user wants to load the plug-in content with w=5 and h=4, you can add the key 'w5h4' to plugin.size and set the value as an html code. The corresponding code will be loaded when loading.(You can also specify w0h0 so that the plug-in does not occupy any place, which is suitable for script plug-in).
+```plugin.size```  ：插件大小，每个1代表90px（注：计算后是插件所在父元素的大小，并不是插件内容的大小，真实可用的内容大小为 ```(w*90-30)``` px 和 ```(h*90-30)``` px）,你可以指定无限的大小，例如：当用户想以w=5,h=4加载插件内容时，你可以在plugin.size中加入键'w5h4'，并将值设为一段html代码，加载时会加载对应代码.
 
-```plugin.all```  ：Specify the default html. That is, when the ```plugin.size``` cannot find the size to be displayed, the html in all will be loaded. You can also add the following code in the plug-in to get the w and h you want.
+```plugin.all```  ：指定默认html，即当```plugin.size```中找不到用户要显示的大小时，就会加载all中的html,你也可以在插件中加入如下代码得到用户想要的w和h.
 ```html
 <script>
   const w=Number(window.frameElement.getAttribute('w'));
   const h=Number(window.frameElement.getAttribute('h'));
 </script>
 ```
-```plugin.src```  ：Directly specify the&lt;iframe&gt;the src of the framework.
+```plugin.src```  ：直接指定要加载的&lt;iframe&gt;框架的src.
 
-```plugin.space```  :If the plug-in has the space key and the boolean value is true, all html will be ignored, and the plug-in will become **empty in structure**, occupying only the position and no content.
+```plugin.space```  ：如果插件有space键且值的布尔值为真，则会忽视所有html，该插件会变为**结构空位**，只占位置，没有内容.
 
-Plug in Example:
+插件示例
 ```javascript
 {
   "name": "Clock",
@@ -55,11 +53,11 @@ Plug in Example:
   }
 }
 ```
-The plug-in effect:
+该插件效果：
 
 ![效果示例](https://sife-shuo.github.io/pictures/1.00.012.png)
 
 
-Example of Taber's effect：
+Taber效果示例：
 
 ![效果示例](https://sife-shuo.github.io/pictures/1.00.010.png)
