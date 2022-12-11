@@ -12,7 +12,7 @@ iframe{border: 0;}li{list-style: none;}ul{padding: 0;position:relative;}
 #plug_h span{margin-left: calc(20% - 10px);border-bottom: 2px solid #0000ff;}#plu{margin-left: 20px;}#plugli{width: 50%;border-right: 1px solid gray;overflow: auto;height: calc(100% - 61px - 41px);}
 </style>
 <script>
-var langs=window.navigator.language=='zh-CN'?['插件全部加载成功','加载错误','导出配置','配置设置','插件管理','导入配置']:['All plug-ins loaded successfully','load error','export config','config setting','plug in management','import config'];
+var langs=window.navigator.language=='zh-CN'?['插件全部加载成功','加载错误','导出配置','配置设置','插件管理','导入配置','删除']:['All plug-ins loaded successfully','load error','export config','config setting','plug in management','import config','delete'];
 if(!localStorage.getItem("config")){
     localStorage.setItem("config",JSON.stringify(
         {"border-re":'16px','backimg':'https://sife-shuo.github.io/pictures/1.00.011.png','plugtitle':'white','plug':[["{\"name\":\"Setting\",\"author\":\"Sife\",\"version\":\"1.0.0\",\"size\":{\"w1h1\":\"<body style=\\\"margin:0;width:60px;height:60px;background-color:blue;overflow:hidden\\\" onclick=\\\"window.parent.document.querySelector('#userUI').click()\\\"><img src='https://sife-shuo.github.io/Taber/setting.png' style=\\\"width:50px;height:50px;margin:5px 5px\\\"></body>\"}}"]],'op':[[1,1,1]]}
@@ -88,9 +88,15 @@ function bind(plug,x,y,w,h,nameb){
     }}else{throw 'PosError'}}else{throw "WidError"}
 };
 function getid(num){var pluging=JSON.parse(config.plug[num]);return pluging['name']+'_'+pluging['author']+'_'+pluging['version'];};
-function changeall(old){
+function changeall(old,w){
+    if(!localStorage.getItem("config")){
+        localStorage.setItem("config",JSON.stringify(
+            {"border-re":'16px','backimg':'https://sife-shuo.github.io/pictures/1.00.011.png','plugtitle':'white','plug':[["{\"name\":\"Setting\",\"author\":\"Sife\",\"version\":\"1.0.0\",\"size\":{\"w1h1\":\"<body style=\\\"margin:0;width:60px;height:60px;background-color:blue;overflow:hidden\\\" onclick=\\\"window.parent.document.querySelector('#userUI').click()\\\"><img src='https://sife-shuo.github.io/Taber/setting.png' style=\\\"width:50px;height:50px;margin:5px 5px\\\"></body>\"}}"]],'op':[[1,1,1]]}
+        ));
+    } 
+    config=JSON.parse(localStorage.getItem("config"));
     not=[];
-    config["w"]=(document.body.clientWidth-document.body.clientWidth%90)/90;
+    config["w"]=w?w:(document.body.clientWidth-document.body.clientWidth%90)/90;
     document.querySelector('.container').style.width=config['w']*90+'px';
     document.querySelector('.container').style.height='100%';
     document.querySelector('.container').style.margin= '0 auto';
@@ -114,7 +120,7 @@ function addplug(plug,w,h,nameb){
 function addpluglist(plug,w,h,nameb){
     config['plug'].push([plug]);config['op'].push([w,h,nameb]);addplug(plug,w,h,nameb)
 };
-function removeplug(id,num){config.plug.removething(num);config.op.removething(num);saveconfig();document.querySelector('.container').removeChild(document.getElementById(id));changeall();}
+function removeplug(id,num){config.plug.removething(num);config.op.removething(num);saveconfig();document.querySelector('.container').removeChild(document.getElementById(id));if(arguments[2]){document.getElementById('plugli').removeChild(arguments[2].target.parentElement);};changeall();}
 /*
 window.frameElement.getAttribute('w') to getparent width
 function moveplug(plug,x,y,speed){
@@ -200,7 +206,7 @@ function cho(n){document.querySelectorAll('div.settings').forEach(e=>{e.style.bo
 document.querySelector('div.settings:nth-child('+String(n)+')').style.borderBottom='3px solid blue';
 document.querySelector('div.settings:nth-child('+String(n)+')').style.color='blue';
 if(n==1){var willconfig=config;Reflect.deleteProperty(willconfig,'w');document.querySelector('#mainpage > div:nth-child(2)').innerHTML='<div class="message"><div style="text-align:center"><strong>'+langs[5]+'</strong></div><input id="user-config" onchange="subcon(this)" type="file"/></div><button id="use_c" onclick=\'dowloadconfig()\' style="margin:20px;padding:20px;background:white;border-radius: var(--border-re);border:0;">'+langs[2]+'</button>'}
-else if(n==2){document.querySelector('#mainpage > div:nth-child(2)').innerHTML="<div class=\"plug_e\" id=\"plug_h\" style=\"margin-bottom:20px;margin-top:20px;\"><span>name</span><span>author</span><span>version</span></div><div id=\"plugli\"></div>";var f=document.querySelector('#plugli');config.plug.map((e,q)=>{var plugin=JSON.parse(e);var u=document.createElement('div');u.innerHTML='<span id="plu">'+plugin['name']+'</span><span id="plu">'+plugin['author']+'</span><span id="plu">'+plugin['version']+"</span><button onclick=\"removeplug(\'"+plugin['name']+"_"+plugin['author']+'_'+plugin['version']+'\','+q+")\">Delete</button>";u.className="plug_e";f.appendChild(u)})}
+else if(n==2){document.querySelector('#mainpage > div:nth-child(2)').innerHTML="<div class=\"plug_e\" id=\"plug_h\" style=\"margin-bottom:20px;margin-top:20px;\"><span>name</span><span>author</span><span>version</span></div><div id=\"plugli\"></div>";var f=document.querySelector('#plugli');config.plug.map((e,q)=>{var plugin=JSON.parse(e);var u=document.createElement('div');u.innerHTML='<span id="plu">'+plugin['name']+'</span><span id="plu">'+plugin['author']+'</span><span id="plu">'+plugin['version']+"</span><button onclick=\"removeplug(\'"+plugin['name']+"_"+plugin['author']+'_'+plugin['version']+'\','+q+',event'+")\">"+langs[6]+"</button>";u.className="plug_e";f.appendChild(u)})}
 };
 function notice(str,colors){document.getElementById('notc').style.backgroundColor=colors;animate(document.getElementById('notc'),{'margin-top':'40px'},'0.5s');document.getElementById('notc').innerText=str;document.getElementById('notc').style.left='calc(50% - '+(document.getElementById('notc').offsetWidth)/2+'px'+')';var s=setTimeout(function(){animate(document.getElementById('notc'),{'margin-top':'-100px'},'0.5s');clearTimeout(s)},3000);}
 function dowloadconfig(){
