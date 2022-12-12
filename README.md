@@ -57,9 +57,9 @@ Plug in Example:
 ```
 The plug-in effect:
 
-![效果示例](https://sife-shuo.github.io/pictures/1.00.012.png)
+![Effect example](https://sife-shuo.github.io/pictures/1.00.012.png)
 
 
 Example of Taber's effect：
 
-![效果示例](https://sife-shuo.github.io/pictures/1.00.010.png)
+![Effect example](https://sife-shuo.github.io/pictures/1.00.010.png)
