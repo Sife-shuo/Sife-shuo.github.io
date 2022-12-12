@@ -1,8 +1,8 @@
 # Sife-shuo.github.io
-[Chinese version](https://github.com/Sife-shuo/Sife-shuo.github.io/blob/main/README-CN.md)
+[简体中文](https://github.com/Sife-shuo/Sife-shuo.github.io/blob/main/README-CN.md)
 - ### **Taber**
 ## Taber
-> Online demo address : https://sife-shuo.github.io/Taber/
+> Online demo address : https://sife.ml/Taber/
 
 The tab with super high degree of freedom allows you to customize dynamic content (called plug-in).
 
