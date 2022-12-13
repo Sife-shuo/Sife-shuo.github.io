@@ -58,7 +58,10 @@ plugin:{
 
 ![效果示例](https://sife-shuo.github.io/pictures/1.00.012.png)
 
-
 Taber效果示例：
 
 ![效果示例](https://sife-shuo.github.io/pictures/1.00.010.png)
+
+所有配置示例：[ConfigShop](https://github.com/Sife-shuo/Sife-shuo.github.io/blob/main/Taber/ConfigShop)
+
+你还可以通过sifed@qq.com联系作者分享配置，该配置将会以您的名字放在ConfigShop.

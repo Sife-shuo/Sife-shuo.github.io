@@ -63,3 +63,7 @@ The plug-in effect:
 Example of Taber's effect：
 
 ![Effect example](https://sife-shuo.github.io/pictures/1.00.010.png)
+
+All configuration examples:[ConfigShop](https://github.com/Sife-shuo/Sife-shuo.github.io/blob/main/Taber/ConfigShop)
+
+You can also pass sifed@qq.com Contact the author to share the configuration, which will be placed in ConfigShop under your name.
