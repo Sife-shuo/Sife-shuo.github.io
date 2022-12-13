@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="204" width="204">
+  <path d="M52,17 l100 0 l50 86.602540378443 l-50 86.602540378443 l-100 0 l-50 -86.602540378443 Z" stroke="black" stroke-width="2" fill="yellow" stroke="none"/>
+  <circle cx="102" cy="17" r="16.6667" stroke="black" stroke-width="0" fill="black"/>
+  <circle cx="177" cy="60.301270189221932338186158537647" r="16.6667" stroke="black" stroke-width="0" fill="black"/>
+  <path d="M52 17 l150 86.602540378443 l-16.667 28.867513459481 l-150 -86.602540378443 Z" />
+  <path d="M2 103.602540378443 l150 86.602540378443 l16.667 -28.867513459481 l-150 -86.602540378443 Z" />
+</svg>
