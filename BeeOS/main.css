@@ -46,6 +46,8 @@ body{margin:0}
     width: var(--app-width);
     height: var(--app-width);
     position: relative;
+    -webkit-user-select:none;
+    user-select: none;
 }
 .apper div{position: absolute;}
 .apper > div:nth-child(1),.apper > div:nth-child(2),.apper > div:nth-child(3),.apper > div:nth-child(5),.apper > div:nth-child(6),.apper > div:nth-child(7){width: 20px;}
