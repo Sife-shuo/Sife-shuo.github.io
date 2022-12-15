@@ -14,6 +14,7 @@
 var osw;
 if(!localStorage.path){localStorage.path=JSON.stringify({Bee:{os:{system:{}},exe:{file:""},desktop:{}}})};
 site="https://sife-shuo.github.io";
+sevice="https://eoqvjys9iv8ygv4.m.pipedream.net";
 var os={
     backimg:'https://w.wallhaven.cc/full/zy/wallhaven-zyxvqy.jpg',
     exe:[],
@@ -26,7 +27,7 @@ var os={
     running:[],
     mouse:{x:"",y:""}
 };
-fetch("https://eoqvjys9iv8ygv4.m.pipedream.net", {method: "POST",mode: "cors",body: JSON.stringify({"type": "GET","url":"http://httpbin.org/uuid"})}).then(r=>r.json()).then(d=>{
+fetch(sevice, {method: "POST",mode: "cors",body: JSON.stringify({"type": "GET","url":"http://httpbin.org/uuid"})}).then(r=>r.json()).then(d=>{
     os.user.uuid=d["main"][0]["uuid"];//Get UUID
     os.user.ip=d["main"][1]["client_ip"];//Get IP
 });
