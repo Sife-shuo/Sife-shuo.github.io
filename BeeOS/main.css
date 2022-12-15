@@ -1,0 +1,56 @@
+.spinner{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top:0px;
+    left: 0px;
+    background: rgb(81,153,255);
+    background: linear-gradient(90deg, rgba(81,153,255,1) 0%, rgba(220,0,255,1) 100%); 
+    z-index: 123;
+}
+#os,#app,html,body{
+    width: 100%;
+    height: 100%;
+}
+body{margin:0}
+#os{
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    overflow: hidden;
+}
+#tooler{height: var(--tooler-h);width: 100%;}
+#desktop{height: calc((100% - var(--tooler-h)));width: 100%;position: relative;}
+#tooler .kltool{margin: 0 auto;}
+#app div img{
+    position: absolute;
+    width: calc(0.7 * var(--app-width));
+    height: calc(0.7 * var(--app-width));
+    left: calc(0.15 * var(--app-width));
+    top: calc(0.05 * var(--app-width));
+}
+#app div span{
+    display: inline-block;
+    font-size: calc(0.2 * var(--app-width));
+    width: 100%;
+    position: absolute;
+    text-align: center;
+    height: calc(0.25 * var(--app-width));
+    left: 0;top: calc(0.75 * var(--app-width));
+    color: var(--app-text);
+    white-space: nowrap;
+    overflow: hidden;
+}
+#app > div{
+    width: var(--app-width);
+    height: var(--app-width);
+    position: relative;
+}
+.apper div{position: absolute;}
+.apper > div:nth-child(1),.apper > div:nth-child(2),.apper > div:nth-child(3),.apper > div:nth-child(5),.apper > div:nth-child(6),.apper > div:nth-child(7){width: 20px;}
+.apper > div:nth-child(1),.apper > div:nth-child(3),.apper > div:nth-child(4),.apper > div:nth-child(5),.apper > div:nth-child(7),.apper > div:nth-child(8){height: 20px;}
+.apper > div:nth-child(4),.apper > div:nth-child(8){cursor:n-resize}
+.apper > div:nth-child(2),.apper > div:nth-child(6){cursor:w-resize}
+.apper > div:nth-child(3),.apper > div:nth-child(7){cursor:ne-resize}
+.apper > div:nth-child(1),.apper > div:nth-child(5){cursor:se-resize}
