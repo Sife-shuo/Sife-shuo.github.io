@@ -65,7 +65,7 @@ function addiron(File){
     a.innerHTML='<img src='+File.icon+'><span>'+File.name+'</span>';
     document.getElementById('app').appendChild(a)
 }
-const appeval=(str)=>{return eval(str)};
+window.appeval=(str)=>{return eval(str)};
 class BeeFile{
     constructor(){
         if(arguments[3]){
