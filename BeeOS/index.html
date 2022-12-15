@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://sife.ml/BeeOS/main.css" type="text/css" />
+<title>BeeOS</title>
+<style>
+</style>
+</head>
+<script>
+var osw;
+if(!localStorage.path){localStorage.path=JSON.stringify({Bee:{os:{system:{}},exe:{file:""},desktop:{}}})};
+var os={
+    backimg:'https://w.wallhaven.cc/full/zy/wallhaven-zyxvqy.jpg',
+    exe:[],
+    user:{name:"Beer",password:"123456",image:"",ip:"",agent:navigator.userAgent,uuid:""},
+    device:{language:navigator.language,name:navigator.appCodeName,version:navigator.appVersion},
+    screen:{width:screen.width,height:screen.height},
+    start:Date.now(),
+    css:{"--app-width":"70px","--app-text":"white","--tooler-h":'40px',"--app-r":'16px','--all':'black'},
+    path:JSON.parse(localStorage.path),
+    icon:{'txt':os.site+"/pictures/other/file/txt.svg",'exe':os.site+"/pictures/other/file/exe.svg",'html':os.site+"/pictures/other/file/html.svg",'doc':os.site+"/pictures/other/file/doc.svg",'xls':os.site+"/pictures/other/file/xls.svg",'ppt':os.site+"/pictures/other/file/ppt.svg",'pdf':os.site+"/pictures/other/file/pdf.svg",'mp3':os.site+"/pictures/other/file/mp3.svg",'mp4':os.site+"/pictures/other/file/mp4.svg"},
+    running:[],
+    mouse:{x:"",y:""},
+    site:"https://sife.ml"
+};
+fetch('http://httpbin.org/ip').then(r=>r.json()).then(d=>{os.user.ip=d.origin});//Get IP
+fetch('http://httpbin.org/uuid').then(r=>r.json()).then(d=>{os.user.uuid=d.uuid});//Get UUID
+Object.keys(os.css).map(e=>{document.querySelector(":root").style.setProperty(e, os.css[e]);})
+const animate=(el,params,speed)=>{//speed:(string) 1s
+    el.style.transition = 'all ' + speed;
+    Object.keys(params).forEach((key) => {
+        el.style[key] = params[key];
+    });
+};
+/*
+path:
+{Bee:{os:{system:{}},{exe:{file:{.json}...}},desktop:{}}}
+file{name:,icon:,time:,owner:,path:,text:,exe:path}
+Bee:{name:,icon:,time:,owner:,path:,text:,config:{width:,height:,left,top,position: absolute}}
+Bee.text={html}fileopen as a <iframe>
+path:Bee/os/system....
+*/
+window.onload = ()=>{
+    osw=document.querySelector('#os');
+    document.onmousemove=(event)=>{os.mouse.x=event.clientX;os.mouse.y=event.clientY;}
+    osw.style.backgroundImage='url('+os['backimg']+')';osw.style.backgroundSize='cover';
+    Object.keys(os.path.Bee.desktop).map(e=>{if((os.path.Bee.desktop[e]).constructor===Object){addiron(new BeeFile(e,"Bee/desktop"+e,"Bee/desktop"+e))}else{addiron(new BeeFile(os.path.Bee.desktop[e]))}})
+    animate(document.querySelector(".spinner"),{'opacity':0},'1s');
+    setTimeout(()=>{document.querySelector(".spinner").style.display='none';document.body.removeChild(document.querySelector(".spinner"))},1000);
+}
+function addiron(File){
+    var a=document.createElement('div');a.ondblclick=()=>{new Bee(findfile(File.exe)).run(File.file)}
+    a.innerHTML='<img src='+File.icon+'><span>'+File.name+'</span>';
+    document.getElementById('app').appendChild(a)
+}
+class BeeFile{
+    constructor(){
+        if(arguments[3]){
+            var [name,path,text,exe]=Array.from(arguments);
+            [this.name,this.path,this.text,this.exe]=[name,path,text,exe];
+            this.time=Date.now();
+            this.owner=os.user.name;
+            this.type=this.name.lastIndexOf('.')!=-1?this.name.slice(this.name.lastIndexOf('.')+1):false;var icon=arguments[4]||os.icon[this.type];
+            this.file=JSON.stringify({'name':name,'icon':icon,'time':this.time,'owner':os.user.name,'path':path,'text':text,'exe':this.exe});
+        }else{this.file=arguments[0];this.auto=JSON.parse(this.file);[this.name,this.time,this.owner,this.path,this.text,this.exe]=[this.auto.name,this.auto.time,this.auto.owner,this.auto.path,this.auto.text,this.auto.exe];this.type=this.name.lastIndexOf('.')!=-1?this.name.slice(this.name.lastIndexOf('.')+1):false;this.icon=this.auto.icon?this.auto.icon:os.icon[this.type]}
+    }
+}
+class BeePath{
+    constructor(path){
+        try{this.path=eval('os.path.'+path.replaceAll('/','.'))}catch(err){eval('os.path.'+path.replaceAll('/','.')+'={}');this.path={}}
+    }
+    addfile=(file)=>{var sname=new BeeFile(file).name;if(this.path[new BeeFile(file).name]){throw "NameError"}else{this.path[new BeeFile(file).name]=file}}
+    getfile=(nam)=>this.path[nam]
+}
+function savepath(){localStorage.path=JSON.stringify(os.path)}
+class Bee{
+    constructor(){
+        if(arguments[3]){
+            [this.name,this.icon,this.owner,this.path,this.text,this.config]=Array.from(arguments);
+            this.config=JSON.parse(this.config);
+            this.file=JSON.stringify({"name":this.name,"icon":this.icon,"time":Date.now(),"owner":this.owner,"path":this.path,"text":this.text,"config":JSON.stringify(this.config)});
+        }
+        else{this.file=arguments[0];this.auto=JSON.parse(this.file);
+            [this.name,this.icon,this.time,this.owner,this.path,this.text,this.config]=[this.auto.name,this.auto.icon,this.auto.time||Date.now(),this.auto.owner,this.auto.path,this.auto.text,JSON.parse(this.auto.config)];
+            this.type=this.name.lastIndexOf('.')!=-1?this.name.slice(this.name.lastIndexOf('.')+1):"bee";
+        }
+    }
+    run=(file)=>{try{this.stop()}catch(err){};
+        var b=document.createElement('div');b.className="apper";b.id=this.name+"-box";
+        b.innerHTML="<div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>";
+        var a=document.createElement('iframe');
+        setStyle(a,this.config);
+        a.id=this.name;
+        a.srcdoc=this.text;
+        a.setAttribute('exe',this.path);
+        if(file){a.setAttribute('file',(new BeeFile(file)).text)};
+        b.appendChild(a);
+        var [x,y]=[Number(a.style.left.replace('px',"")),Number(a.style.top.replace('px',""))];
+        var [w,h]=[Number(a.style.width.replace('px',"")),Number(a.style.height.replace('px',""))];
+        b.childNodes[1].style.height=(h-20)+'px';b.childNodes[5].style.height=(h-20)+'px';
+        b.childNodes[3].style.width=(w-20)+'px';b.childNodes[7].style.width=(w-20)+'px';
+        b.childNodes[0].style.left=(x-10)+'px';b.childNodes[1].style.left=(x-10)+'px';b.childNodes[2].style.left=(x-10)+'px';
+        b.childNodes[4].style.left=(x+w-10)+'px';b.childNodes[5].style.left=(x+w-10)+'px';b.childNodes[6].style.left=(x+w-10)+'px';
+        b.childNodes[3].style.left=(x+10)+'px';b.childNodes[7].style.left=(x+10)+'px';
+        b.childNodes[0].style.top=(y-10)+'px';b.childNodes[1].style.top=(y+10)+'px';b.childNodes[2].style.top=(y+h-10)+'px';
+        b.childNodes[4].style.top=(y+h-10)+'px';b.childNodes[5].style.top=(y+10)+'px';b.childNodes[6].style.top=(y-10)+'px';
+        b.childNodes[3].style.top=(y+h-10)+'px';b.childNodes[7].style.top=(y-10)+'px';
+        document.getElementById('desktop').appendChild(b);
+        os.running.push(this.name)
+    }
+    stop=()=>{document.querySelector('#desktop').removeChild(document.getElementById(this.name+'-box'));os.running.remove(this.name)}
+}
+const findfile=(path)=>{return new BeePath(path.slice(0,path.lastIndexOf('/'))).getfile(path.slice(path.lastIndexOf('/')+1))}
+const setStyle=(target, styles)=>{{Object.keys(styles).map(k=>{target.style[k] = styles[k]})}}
+function stop_app(path){
+    new Bee(findfile(path)).stop();
+}
+Array.prototype.remove=function(v){return this.splice(this.indexOf(v),1)}
+</script>
+</html>
+<body>
+<div class="spinner"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="204" width="204" style="position: absolute;left: calc(50% - 102px);top: calc(50% - 102px);">
+    <path d="M52,17 l100 0 l50 86.602540378443 l-50 86.602540378443 l-100 0 l-50 -86.602540378443 Z" stroke-width="2" fill="yellow" stroke="none"/>
+    <circle cx="102" cy="17" r="16.6667" stroke="black" stroke-width="0" fill="black"/>
+    <circle cx="177" cy="60.301270189221932338186158537647" r="16.6667" stroke="black" stroke-width="0" fill="black"/>
+    <path d="M52 17 l150 86.602540378443 l-16.667 28.867513459481 l-150 -86.602540378443 Z"/>
+    <path d="M2 103.602540378443 l150 86.602540378443 l16.667 -28.867513459481 l-150 -86.602540378443 Z"/>
+  </svg>
+</div>
+<div id="os">
+<div id="desktop"><div id="app"></div></div>
+<div id="tooler"><div class="kltool"></div></div>
+</div>
+</body>
+</html>
