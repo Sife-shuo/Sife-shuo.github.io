@@ -120,8 +120,8 @@ class Bee{
         os.running.push(this.name)
     }
     stop=()=>{document.querySelector('#desktop').removeChild(document.getElementById(this.name+'-box'));os.running.remove(this.name)}
-    hide=()=>{animate(document.getElementById(this.name+'-box'),{'top':Number(document.getElementById(this.name+'-box').style.top.replace('px'))+100+"px"},'1s');setTimeout(()=>{document.getElementById(this.name+'-box').style.display='none';},1000);}
-    see=()=>{document.getElementById(this.name+'-box').style.display='block';animate(document.getElementById(this.name+'-box'),{'top':Number(document.getElementById(this.name+'-box').style.top.replace('px'))-100+"px"},'1s')}
+    hide=()=>{animate(document.getElementById(this.name),{'top':Number(document.getElementById(this.name).style.top.replace('px'))+100+"px"},'1s');setTimeout(()=>{document.getElementById(this.name+'-box').style.display='none';},1000);}
+    see=()=>{document.getElementById(this.name+'-box').style.display='block';animate(document.getElementById(this.name),{'top':Number(document.getElementById(this.name).style.top.replace('px'))-100+"px"},'1s')}
 }
 const findfile=(path)=>{return new BeePath(path.slice(0,path.lastIndexOf('/'))).getfile(path.slice(path.lastIndexOf('/')+1))}
 const setStyle=(target, styles)=>{{Object.keys(styles).map(k=>{target.style[k] = styles[k]})}}
