@@ -17,7 +17,7 @@ iframe{border: 0;}li{list-style: none;}ul{padding: 0;position:relative;}
 var langs=window.navigator.language=='zh-CN'?['插件全部加载成功','加载错误','导出配置','配置设置','插件管理','导入配置','删除','导入插件']:['All plug-ins loaded successfully','load error','export config','config setting','plug in management','import config','delete','import plugin'];
 if(!localStorage.getItem("config")){
     localStorage.setItem("config",JSON.stringify(
-        {"border-re":'16px','backimg':'https://sife-shuo.github.io/pictures/1.00.011.png','plugtitle':'white','plug':[["{\"name\":\"Setting\",\"author\":\"Sife\",\"version\":\"1.0.0\",\"size\":{\"w1h1\":\"<body style=\\\"margin:0;width:60px;height:60px;background-color:blue;overflow:hidden\\\" onclick=\\\"window.parent.document.querySelector('#userUI').click()\\\"><img src='https://sife-shuo.github.io/Taber/setting.png' style=\\\"width:50px;height:50px;margin:5px 5px\\\"></body>\"}}"]],'op':[[1,1,1]]}
+        {"border-re":'16px','backimg':site+'/pictures/1.00.011.png','plugtitle':'white','plug':[["{\"name\":\"Setting\",\"author\":\"Sife\",\"version\":\"1.0.0\",\"size\":{\"w1h1\":\"<body style=\\\"margin:0;width:60px;height:60px;background-color:blue;overflow:hidden\\\" onclick=\\\"window.parent.document.querySelector('#userUI').click()\\\"><img src=\'"+site+"/Taber/setting.png' style=\\\"width:50px;height:50px;margin:5px 5px\\\"></body>\"}}"]],'op':[[1,1,1]]}
     ));
 } 
 config=JSON.parse(localStorage.getItem("config"));
@@ -25,6 +25,7 @@ config=JSON.parse(localStorage.getItem("config"));
 //config['backimg']='https://w.wallhaven.cc/full/g7/wallhaven-g7jq3l.png';
 //config['plugtitle']='white';
 //config{"border-re",'backimg','plugtitle',plug:[[pluging,w,h,nameb]],'last-w'}
+site="https://sife.ml";
 truepos=[];
 not=[];
 dellist=[];
@@ -94,7 +95,7 @@ function getid(num){var pluging=JSON.parse(config.plug[num]);return pluging['nam
 function changeall(old,w){
     if(!localStorage.getItem("config")){
         localStorage.setItem("config",JSON.stringify(
-            {"border-re":'16px','backimg':'https://sife-shuo.github.io/pictures/1.00.011.png','plugtitle':'white','plug':[["{\"name\":\"Setting\",\"author\":\"Sife\",\"version\":\"1.0.0\",\"size\":{\"w1h1\":\"<body style=\\\"margin:0;width:60px;height:60px;background-color:blue;overflow:hidden\\\" onclick=\\\"window.parent.document.querySelector('#userUI').click()\\\"><img src='https://sife-shuo.github.io/Taber/setting.png' style=\\\"width:50px;height:50px;margin:5px 5px\\\"></body>\"}}"]],'op':[[1,1,1]]}
+            {"border-re":'16px','backimg':site+'/pictures/1.00.011.png','plugtitle':'white','plug':[["{\"name\":\"Setting\",\"author\":\"Sife\",\"version\":\"1.0.0\",\"size\":{\"w1h1\":\"<body style=\\\"margin:0;width:60px;height:60px;background-color:blue;overflow:hidden\\\" onclick=\\\"window.parent.document.querySelector('#userUI').click()\\\"><img src=\'"+site+"/Taber/setting.png' style=\\\"width:50px;height:50px;margin:5px 5px\\\"></body>\"}}"]],'op':[[1,1,1]]}
         ));
     } 
     config=JSON.parse(localStorage.getItem("config"));
