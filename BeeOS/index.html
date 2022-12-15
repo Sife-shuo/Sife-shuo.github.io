@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="https://sife.ml/BeeOS/main.css" type="text/css" />
+<link rel="stylesheet" href="https://sife-shuo.github.io/BeeOS/main.css" type="text/css" />
 <script src="https://sife-shuo.github.io/tool/localforage.min.js"></script>
 <title>BeeOS</title>
 <style>
@@ -12,7 +12,6 @@
 </head>
 <script>
 var osw;
-localforage.getItem('path',(e,v)=>{if(!v){localforage.setItem('path',{Bee:{os:{system:{}},exe:{file:""},desktop:{}}})}})
 site="https://sife-shuo.github.io";
 sevice="https://eoqvjys9iv8ygv4.m.pipedream.net";
 var os={
@@ -50,6 +49,7 @@ Bee.text={html}fileopen as a <iframe>
 path:Bee/os/system....
 */
 window.onload = ()=>{
+    localforage.getItem('path',(e,v)=>{if(!v){localforage.setItem('path',{Bee:{os:{system:{}},exe:{file:""},desktop:{}}})}}).then(()=>{
     osw=document.querySelector('#os');
     document.onmousemove=(event)=>{os.mouse.x=event.clientX;os.mouse.y=event.clientY;}
     osw.style.backgroundImage='url('+os['backimg']+')';osw.style.backgroundSize='cover';
@@ -59,7 +59,7 @@ window.onload = ()=>{
     });
     animate(document.querySelector(".spinner"),{'opacity':0},'1s');
     setTimeout(()=>{document.querySelector(".spinner").style.display='none';document.body.removeChild(document.querySelector(".spinner"))},1000);
-}
+})}
 function addiron(File){
     var a=document.createElement('div');a.ondblclick=()=>{new Bee(findfile(File.exe)).run(File.file)}
     a.innerHTML='<img src='+File.icon+'><span>'+File.name+'</span>';
@@ -134,7 +134,7 @@ Array.prototype.remove=function(v){return this.splice(this.indexOf(v),1)}
 </script>
 </html>
 <body>
-<div class="spinner"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="204" width="204" style="position: absolute;left: calc(50% - 102px);top: calc(50% - 102px);">
+<div class="spinner"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="204" width="204">
     <path d="M52,17 l100 0 l50 86.602540378443 l-50 86.602540378443 l-100 0 l-50 -86.602540378443 Z" stroke-width="2" fill="yellow" stroke="none"/>
     <circle cx="102" cy="17" r="16.6667" stroke="black" stroke-width="0" fill="black"/>
     <circle cx="177" cy="60.301270189221932338186158537647" r="16.6667" stroke="black" stroke-width="0" fill="black"/>
