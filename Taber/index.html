@@ -123,7 +123,7 @@ function addplug(plug,w,h,nameb){
 function addpluglist(plug,w,h,nameb){
     config['plug'].push([plug]);config['op'].push([w,h,nameb]);addplug(plug,w,h,nameb)
 };
-function removeplug(id,num){config.plug.removething(num);config.op.removething(num);saveconfig();document.querySelector('.container').removeChild(document.getElementById(id));if(arguments[2]){arguments[2].target.parentElement.style.display='none';};dellist.push(num);changeall();}
+function removeplug(id,num){num=num-dellist.length;config.plug.removething(num);config.op.removething(num);saveconfig();document.querySelector('.container').removeChild(document.getElementById(id));if(arguments[2]){arguments[2].target.parentElement.style.display='none';};dellist.push(num);changeall();}
 function chanplug(num){config.plug.splice(num,2,config.plug[num+1],config.plug[num]);config.op.splice(num,2,config.op[num+1],config.op[num]);saveconfig();changeall()}//next
 function lchplug(num){config.plug.splice(num-1,2,config.plug[num],config.plug[num-1]);config.op.splice(num-1,2,config.op[num],config.op[num-1]);saveconfig();changeall()}//last
 /*
