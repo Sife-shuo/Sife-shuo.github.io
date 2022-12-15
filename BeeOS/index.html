@@ -25,6 +25,7 @@ var os={
     css:{"--app-width":"70px","--app-text":"white","--tooler-h":'40px',"--app-r":'16px','--all':'black'},
     icon:{'txt':site+"/pictures/other/file/txt.svg",'exe':site+"/pictures/other/file/exe.svg",'html':site+"/pictures/other/file/html.svg",'doc':site+"/pictures/other/file/doc.svg",'xls':site+"/pictures/other/file/xls.svg",'ppt':site+"/pictures/other/file/ppt.svg",'pdf':site+"/pictures/other/file/pdf.svg",'mp3':site+"/pictures/other/file/mp3.svg",'mp4':site+"/pictures/other/file/mp4.svg"},
     running:[],
+    path:{},
     mouse:{x:"",y:""}
 };
 fetch(sevice, {method: "POST",mode: "cors",body: JSON.stringify({"type": "GET","url":"http://httpbin.org/uuid"})}).then(r=>r.json()).then(d=>{
@@ -120,8 +121,8 @@ class Bee{
         os.running.push(this.name)
     }
     stop=()=>{document.querySelector('#desktop').removeChild(document.getElementById(this.name+'-box'));os.running.remove(this.name)}
-    hide=()=>{animate(document.getElementById(this.name),{'top':Number(document.getElementById(this.name).style.top.replace('px',""))+600+"px"},'1s');setTimeout(()=>{document.getElementById(this.name+'-box').style.display='none';},1000);}
-    see=()=>{document.getElementById(this.name+'-box').style.display='block';setTimeout(()=>{animate(document.getElementById(this.name),{'top':Number(document.getElementById(this.name).style.top.replace('px',""))-600+"px"},'1s')},100)}
+    hide=()=>{animate(document.getElementById(this.name),{'top':os.screen.height+"px"},'1s');setTimeout(()=>{document.getElementById(this.name+'-box').style.display='none';},1000);}
+    see=()=>{document.getElementById(this.name+'-box').style.display='block';setTimeout(()=>{animate(document.getElementById(this.name),{'top':this.config['top'].replace('px',"")+"px"},'1s')},100)}
 }
 const findfile=(path)=>{return new BeePath(path.slice(0,path.lastIndexOf('/'))).getfile(path.slice(path.lastIndexOf('/')+1))}
 const setStyle=(target, styles)=>{{Object.keys(styles).map(k=>{target.style[k] = styles[k]})}}
