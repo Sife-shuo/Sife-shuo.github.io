@@ -12,7 +12,7 @@
 </head>
 <script>
 var osw;
-if(!localStorage.path){localStorage.path=JSON.stringify({Bee:{os:{system:{}},exe:{file:""},desktop:{}}})};
+localforage.getItem('path',(e,v)=>{if(!v){localforage.setItem('path',{Bee:{os:{system:{}},exe:{file:""},desktop:{}}})}})
 site="https://sife-shuo.github.io";
 sevice="https://eoqvjys9iv8ygv4.m.pipedream.net";
 var os={
