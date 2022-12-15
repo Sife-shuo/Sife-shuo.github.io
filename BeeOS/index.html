@@ -12,6 +12,7 @@
 <script>
 var osw;
 if(!localStorage.path){localStorage.path=JSON.stringify({Bee:{os:{system:{}},exe:{file:""},desktop:{}}})};
+site="https://sife.ml";
 var os={
     backimg:'https://w.wallhaven.cc/full/zy/wallhaven-zyxvqy.jpg',
     exe:[],
@@ -21,10 +22,9 @@ var os={
     start:Date.now(),
     css:{"--app-width":"70px","--app-text":"white","--tooler-h":'40px',"--app-r":'16px','--all':'black'},
     path:JSON.parse(localStorage.path),
-    icon:{'txt':os.site+"/pictures/other/file/txt.svg",'exe':os.site+"/pictures/other/file/exe.svg",'html':os.site+"/pictures/other/file/html.svg",'doc':os.site+"/pictures/other/file/doc.svg",'xls':os.site+"/pictures/other/file/xls.svg",'ppt':os.site+"/pictures/other/file/ppt.svg",'pdf':os.site+"/pictures/other/file/pdf.svg",'mp3':os.site+"/pictures/other/file/mp3.svg",'mp4':os.site+"/pictures/other/file/mp4.svg"},
+    icon:{'txt':site+"/pictures/other/file/txt.svg",'exe':site+"/pictures/other/file/exe.svg",'html':site+"/pictures/other/file/html.svg",'doc':site+"/pictures/other/file/doc.svg",'xls':site+"/pictures/other/file/xls.svg",'ppt':site+"/pictures/other/file/ppt.svg",'pdf':site+"/pictures/other/file/pdf.svg",'mp3':site+"/pictures/other/file/mp3.svg",'mp4':site+"/pictures/other/file/mp4.svg"},
     running:[],
-    mouse:{x:"",y:""},
-    site:"https://sife.ml"
+    mouse:{x:"",y:""}
 };
 fetch('http://httpbin.org/ip').then(r=>r.json()).then(d=>{os.user.ip=d.origin});//Get IP
 fetch('http://httpbin.org/uuid').then(r=>r.json()).then(d=>{os.user.uuid=d.uuid});//Get UUID
