@@ -14,26 +14,13 @@
 var osw;
 site="https://sife-shuo.github.io";
 sevice="https://eoqvjys9iv8ygv4.m.pipedream.net";
-var os={
-    backimg:'https://w.wallhaven.cc/full/zy/wallhaven-zyxvqy.jpg',
-    exe:[],
-    user:{name:"Beer",password:"123456",image:"",ip:"",agent:navigator.userAgent,uuid:""},
-    device:{language:navigator.language,name:navigator.appCodeName,version:navigator.appVersion},
-    screen:{width:screen.width,height:screen.height},
-    start:Date.now(),
-    css:{"--app-width":"70px","--app-text":"white","--tooler-h":'40px',"--app-r":'16px','--all':'black'},
-    icon:{'txt':site+"/pictures/other/file/txt.svg",'exe':site+"/pictures/other/file/exe.svg",'html':site+"/pictures/other/file/html.svg",'doc':site+"/pictures/other/file/doc.svg",'xls':site+"/pictures/other/file/xls.svg",'ppt':site+"/pictures/other/file/ppt.svg",'pdf':site+"/pictures/other/file/pdf.svg",'mp3':site+"/pictures/other/file/mp3.svg",'mp4':site+"/pictures/other/file/mp4.svg"},
-    running:[],
-    path:{},
-    mouse:{x:"",y:""}
-};
+var os={};
 fetch(sevice, {method: "POST",mode: "cors",body: JSON.stringify({"type": "GET","url":"http://httpbin.org/uuid"})}).then(r=>r.json()).then(d=>{
     os.user.uuid=d["main"][0]["uuid"];//Get UUID
     os.user.ip=d["main"][1]["client_ip"];//Get IP
 });
 //fetch('http://httpbin.org/ip').then(r=>r.json()).then(d=>{os.user.ip=d.origin});//Get IP
 //fetch('http://httpbin.org/uuid').then(r=>r.json()).then(d=>{os.user.uuid=d.uuid});//Get UUID
-Object.keys(os.css).map(e=>{document.querySelector(":root").style.setProperty(e, os.css[e]);})
 const animate=(el,params,speed)=>{//speed:(string) 1s
     el.style.transition = 'all ' + speed;
     Object.keys(params).forEach((key) => {
@@ -49,16 +36,29 @@ Bee.text={html}fileopen as a <iframe>
 path:Bee/os/system....
 */
 window.onload = ()=>{
-    localforage.getItem('path',(e,v)=>{if(!v){localforage.setItem('path',{Bee:{os:{system:{}},exe:{file:""},desktop:{}}})}}).then(()=>{
-    osw=document.querySelector('#os');
-    document.onmousemove=(event)=>{os.mouse.x=event.clientX;os.mouse.y=event.clientY;}
-    osw.style.backgroundImage='url('+os['backimg']+')';osw.style.backgroundSize='cover';
-    localforage.getItem('path', function(err, value) {
-        os.path=value;
+    localforage.getItem('os',(e,v)=>{if(!v){localforage.setItem('os',{
+    backimg:'https://w.wallhaven.cc/full/zy/wallhaven-zyxvqy.jpg',
+    exe:[],
+    user:{name:"Beer",password:"123456",image:"",ip:"",agent:navigator.userAgent,uuid:""},
+    device:{language:navigator.language,name:navigator.appCodeName,version:navigator.appVersion},
+    screen:{width:screen.width,height:screen.height},
+    start:Date.now(),
+    css:{"--app-width":"70px","--app-text":"white","--tooler-h":'40px',"--app-r":'16px','--all':'black'},
+    icon:{'txt':site+"/pictures/other/file/txt.svg",'exe':site+"/pictures/other/file/exe.svg",'html':site+"/pictures/other/file/html.svg",'doc':site+"/pictures/other/file/doc.svg",'xls':site+"/pictures/other/file/xls.svg",'ppt':site+"/pictures/other/file/ppt.svg",'pdf':site+"/pictures/other/file/pdf.svg",'mp3':site+"/pictures/other/file/mp3.svg",'mp4':site+"/pictures/other/file/mp4.svg"},
+    type:{},
+    running:[],
+    path:{Bee:{os:{system:{}},exe:{file:""},desktop:{}}},
+    mouse:{x:"",y:""}
+})}}).then(()=>{localforage.getItem('os', function(err, value) {
+        os=value;
+        osw=document.querySelector('#os');
+        document.onmousemove=(event)=>{os.mouse.x=event.clientX;os.mouse.y=event.clientY;}
+        osw.style.backgroundImage='url('+os['backimg']+')';osw.style.backgroundSize='cover';
+        Object.keys(os.css).map(e=>{document.querySelector(":root").style.setProperty(e, os.css[e]);})
         Object.keys(os.path.Bee.desktop).map(e=>{if((os.path.Bee.desktop[e]).constructor===Object){addiron(new BeeFile(e,"Bee/desktop"+e,"Bee/desktop"+e))}else{addiron(new BeeFile(os.path.Bee.desktop[e]))}})
-    });
     animate(document.querySelector(".spinner"),{'opacity':0},'1s');
     setTimeout(()=>{document.querySelector(".spinner").style.display='none';document.body.removeChild(document.querySelector(".spinner"))},1000);
+    });
 })}
 function addiron(File){
     var a=document.createElement('div');a.ondblclick=()=>{new Bee(findfile(File.exe)).run(File.file)}
@@ -85,7 +85,7 @@ class BeePath{
     addfile=(file)=>{var sname=new BeeFile(file).name;if(this.path[new BeeFile(file).name]){throw "NameError"}else{this.path[new BeeFile(file).name]=file}}
     getfile=(nam)=>this.path[nam]
 }
-function savepath(){localforage.setItem('path',os.path);}
+function savepath(){localforage.setItem('os',os);}
 class Bee{
     constructor(){
         if(arguments[3]){
@@ -124,6 +124,8 @@ class Bee{
     stop=()=>{document.querySelector('#desktop').removeChild(document.getElementById(this.name+'-box'));os.running.remove(this.name)}
     hide=()=>{animate(document.getElementById(this.name),{'top':os.screen.height+"px"},'1s');setTimeout(()=>{document.getElementById(this.name+'-box').style.display='none';},1000);}
     see=()=>{document.getElementById(this.name+'-box').style.display='block';setTimeout(()=>{animate(document.getElementById(this.name),{'top':this.config['top'].replace('px',"")+"px"},'1s')},100)}
+    addtype=(type)=>{os.type[type]=this.path}
+    addos=()=>{os.exe.push(this.path)}
 }
 const findfile=(path)=>{return new BeePath(path.slice(0,path.lastIndexOf('/'))).getfile(path.slice(path.lastIndexOf('/')+1))}
 const setStyle=(target, styles)=>{{Object.keys(styles).map(k=>{target.style[k] = styles[k]})}}

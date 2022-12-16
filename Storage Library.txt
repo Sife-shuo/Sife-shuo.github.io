@@ -1,5 +1,6 @@
 The storage library used by the project.
 <Indexed DB>
 path
+os
 <localStorage>
 config
