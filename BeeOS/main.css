@@ -25,9 +25,19 @@ body{margin:0}
     background-size: cover;
     overflow: hidden;
 }
-#tooler{height: var(--tooler-h);width: 100%;}
+#tooler{height: var(--tooler-h);width: 100%;
+    background-color: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    -webkit-box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
+    box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
+    color: rgba(255, 255, 255, 0.75);
+}
+.kltool > div > img{height: var(--tooler-h);width: var(--tooler-h);}
+.kltool > div {height: var(--tooler-h);width: var(--tooler-h);}
 #desktop{height: calc((100% - var(--tooler-h)));width: 100%;position: relative;}
-#tooler .kltool{margin: 0 auto;}
+#tooler .kltool{width: -moz-fit-content;width: fit-content;margin: 0 auto;}
 #app div img{
     position: absolute;
     width: calc(0.7 * var(--app-width));

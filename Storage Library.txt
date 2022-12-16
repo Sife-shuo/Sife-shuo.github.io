@@ -1,6 +1,5 @@
 The storage library used by the project.
 <Indexed DB>
-path
-os
+<BeeOS>os
 <localStorage>
-config
+<Taber>config
