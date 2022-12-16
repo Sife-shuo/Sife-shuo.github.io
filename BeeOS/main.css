@@ -27,8 +27,8 @@ body{margin:0}
 }
 #tooler{height: var(--tooler-h);width: 100%;
     background-color: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
     border: 1px solid rgba(255, 255, 255, 0.18);
     -webkit-box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
     box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
