@@ -46,10 +46,11 @@ window.onload = ()=>{
     screen:{width:screen.width,height:screen.height},
     start:Date.now(),
     css:{"--app-width":"70px","--app-text":"white","--tooler-h":'60px',"--app-r":'16px','--all':'black'},
-    icon:{'txt':site+"/pictures/other/file/txt.svg",'exe':site+"/pictures/other/file/exe.svg",'html':site+"/pictures/other/file/html.svg",'doc':site+"/pictures/other/file/doc.svg",'xls':site+"/pictures/other/file/xls.svg",'ppt':site+"/pictures/other/file/ppt.svg",'pdf':site+"/pictures/other/file/pdf.svg",'mp3':site+"/pictures/other/file/mp3.svg",'mp4':site+"/pictures/other/file/mp4.svg"},
+    icon:{'txt':site+"/pictures/other/file/txt.svg","bee":site+"/pictures/logo.svg",'exe':site+"/pictures/other/file/exe.svg",'html':site+"/pictures/other/file/html.svg",'doc':site+"/pictures/other/file/doc.svg",'xls':site+"/pictures/other/file/xls.svg",'ppt':site+"/pictures/other/file/ppt.svg",'pdf':site+"/pictures/other/file/pdf.svg",'mp3':site+"/pictures/other/file/mp3.svg",'mp4':site+"/pictures/other/file/mp4.svg"},
     type:{},
+    command:{},
     running:[],
-    path:{Bee:{os:{system:{}},exe:{file:""},desktop:{}}},
+    path:{Bee:{os:{system:{}},exe:{file:""},command:{},desktop:{}}},
     mouse:{x:"",y:""}
 })}}).then(()=>{localforage.getItem('os', function(err, value) {
         os=value;
@@ -92,9 +93,10 @@ function saveos(){localforage.setItem('os',os);}
 class Bee{
     constructor(){
         if(arguments[3]){
-            [this.name,this.icon,this.owner,this.path,this.text,this.config]=Array.from(arguments);
+            [this.name,this.path,this.text,this.config]=Array.from(arguments);
             this.config=JSON.parse(this.config);
-            this.file=JSON.stringify({"name":this.name,"icon":this.icon,"time":Date.now(),"owner":this.owner,"path":this.path,"text":this.text,"config":JSON.stringify(this.config)});
+            this.icon=arguments[4]||os.icon['bee'];
+            this.file=JSON.stringify({"name":this.name,"icon":this.icon,"time":Date.now(),"owner":os.user.name,"path":this.path,"text":this.text,"config":JSON.stringify(this.config)});
         }
         else{this.file=arguments[0];this.auto=JSON.parse(this.file);
             [this.name,this.icon,this.time,this.owner,this.path,this.text,this.config]=[this.auto.name,this.auto.icon,this.auto.time||Date.now(),this.auto.owner,this.auto.path,this.auto.text,JSON.parse(this.auto.config)];
@@ -124,6 +126,16 @@ class Bee{
         document.getElementById('desktop').appendChild(b);
         os.running.push(this.name)
     }
+    runcmd=(list)=>{
+        var a=document.createElement('iframe');
+        setStyle(a,this.config);
+        a.id=this.name;
+        a.srcdoc=this.text;
+        a.setAttribute('exe',this.path);
+        a.setAttribute('cmd',list)
+        document.getElementById('desktop').appendChild(a);
+        os.running.push(this.name)
+    }
     stop=()=>{document.querySelector('#desktop').removeChild(document.getElementById(this.name+'-box'));os.running.remove(this.name)}
     hide=()=>{animate(document.getElementById(this.name),{'top':os.screen.height+"px"},'1s');setTimeout(()=>{document.getElementById(this.name+'-box').style.display='none';},1000);}
     see=()=>{document.getElementById(this.name+'-box').style.display='block';setTimeout(()=>{animate(document.getElementById(this.name),{'top':this.config['top'].replace('px',"")+"px"},'1s')},100)}
@@ -136,10 +148,16 @@ class Bee{
         if(b!=1){os.tooler.push(this.path)}
     }
 }
-const findfile=(path)=>{return new BeePath(path.slice(0,path.lastIndexOf('/'))).getfile(path.slice(path.lastIndexOf('/')+1))}
+const findfile=(path)=>{try{return new BeePath(path.slice(0,path.lastIndexOf('/'))).getfile(path.slice(path.lastIndexOf('/')+1))}catch(err){throw "NoThing"}}
 const setStyle=(target, styles)=>{{Object.keys(styles).map(k=>{target.style[k] = styles[k]})}}
 function stop_app(path){
     new Bee(findfile(path)).stop();
+}
+window.command=(list)=>{
+    if(list.constructor==String){list=list.split(" ")};
+    list=list.map((str)=>{return (str.search('-{1,}')==0?str.replace(str.match('-{1,}')[0],""):str).toLowerCase()})
+    list=list.map((str)=>{return str.search('/{1}')==0?str.replace(str.match('/{1}')[0],""):str})//remove -
+    if(os.command[list[0]]){new Bee(findfile(os.command[list[0]])).runcmd(cmd)}else{try{new Bee(findfile("Bee/command/"+list[0]+".bee")).runcmd(list)}catch(err){throw "NoCommand"}}
 }
 Array.prototype.remove=function(v){return this.splice(this.indexOf(v),1)}
 </script>
