@@ -14,6 +14,7 @@ iframe{border: 0;}li{list-style: none;}ul{padding: 0;position:relative;}
 #mainpage > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > button:nth-child(7) {padding: 10px 20px;margin-top: 20px;background-color: #93a9ff;border: 0;border-radius: var(--border-re);}
 </style>
 <script>
+site="https://sife-shuo.github.io";
 var langs=window.navigator.language=='zh-CN'?['插件全部加载成功','加载错误','导出配置','配置设置','插件管理','导入配置','删除','导入插件']:['All plug-ins loaded successfully','load error','export config','config setting','plug in management','import config','delete','import plugin'];
 if(!localStorage.getItem("config")){
     localStorage.setItem("config",JSON.stringify(
@@ -25,7 +26,6 @@ config=JSON.parse(localStorage.getItem("config"));
 //config['backimg']='https://w.wallhaven.cc/full/g7/wallhaven-g7jq3l.png';
 //config['plugtitle']='white';
 //config{"border-re",'backimg','plugtitle',plug:[[pluging,w,h,nameb]],'last-w'}
-site="https://sife-shuo.github.io";
 truepos=[];
 not=[];
 dellist=[];
