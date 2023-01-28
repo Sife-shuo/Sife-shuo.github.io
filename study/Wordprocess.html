@@ -19,7 +19,7 @@ function go(){
     }
 }
 const password=(text)=>{return text.split('').map(e=>{return password_10(e.charCodeAt(0))}).join(".")};
-const password_10=(text)=>{return text.toString(2).replaceAll('1','!').replaceAll('0','?')};
+const password_10=(text)=>{return text.toString(2).replaceAll('1','!').replaceAll('0','喵')};
 const inpassword=(pass)=>{var ar=[];pass.split('.').map(e=>{ar.push(String.fromCharCode(inpassword_10(e)))});return ar.join("")};
-const inpassword_10=(pass)=>{return parseInt(pass.replaceAll('!','1').replaceAll('?','0'),2)}
+const inpassword_10=(pass)=>{return parseInt(pass.replaceAll('!','1').replaceAll('喵','0'),2)}
 </script>
