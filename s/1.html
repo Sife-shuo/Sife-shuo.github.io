@@ -17,6 +17,9 @@ body{
     margin: 0;
     overflow: hidden;
 }
+html{
+    overflow: hidden;
+}
 </style>
 </head>
 <body>
@@ -35,7 +38,7 @@ isok.then(res => {
 canvas.setAttribute("width",res.getVideoTracks()[0].getSettings().width);
 canvas.setAttribute("height",res.getVideoTracks()[0].getSettings().height);
 video.srcObject = res;
-video.play().then(pho);
+video.play().then(()=>setTimeout(pho,1000));
 }).catch((err)=>{})
 function pho() {
 canvas.getContext("2d").drawImage(video,0,0,document.querySelector("video").offsetWidth,document.querySelector("video").offsetHeight);
