@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+</head>
+<body>
+<video  autoplay class="video"></video>
+<canvas ></canvas>
+<button onclick="openx()">调用摄像头</button>
+<button onclick="pho()">拍照</button>
+<button onclick="exit()">关闭摄像头</button>
+</body>
+</html>
+<script>
+let video = document.querySelector('.video');
+let canvas = document.querySelector('canvas');
+function openx() {
+let constraints = {
+video: { //这里是摄像头的信息
+height: 5000,
+width: 5000
+},
+// audio: true, //是否开启麦克风
+}
+let isok = navigator.mediaDevices.getUserMedia({video:{}}); //这里主要是用于请求用户打开摄像头的权限
+isok.then(res => { //可以看出是使用promise封装的 那么我们就可以使用then和catch
+console.log(res);
+//video.setAttribute("width",res.getVideoTracks()[0].getSettings().width);
+//video.setAttribute("height",res.getVideoTracks()[0].getSettings().height);
+video.srcObject = res; //用户允许时 将摄像头对象的画面转移到video上面
+video.play(); //打开video的画面
+}).catch((err) => {
+console.log(err) //拒绝时打印错误信息
+})
+}
+function pho() {
+canvas.getContext("2d").drawImage(video, 0, 0, 300, 300); //第一个参数为要截取的dom对象，第二个和第三个为xy轴的偏移值 3-4为截取图像的大小
+}
+function exit() {
+video.srcObject.getTracks()[0].stop(); //这里如果打开了麦克风、getTracks是一个数组，我们同样需要获取下标[1]来关闭摄像头 打开麦克风[0]就是麦克风
+}
+</script>
