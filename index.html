@@ -5,5 +5,17 @@
 <body>
 <h1>Sife</h1>
 <img id="i" src="https://eo8htsukjtygbsz.m.pipedream.net/SifeML-ip" style="display: none;"/>
+求求技术大哥别再整我了，呜呜呜<br>
+那个盗号教程其实是给我同学看的（我不广泛传播，本来计划是他看完我就删了的，没想到还是被发现了，呜呜呜）<br>
+技术大哥留言（发送到服务器，轻点喷）：<br>
+<input id="www"><button id="send">Send</button>
+<script>
+document.querySelector("#send").onclick=()=>{
+    document.querySelector("#send").innerText="Sending";
+    fetch("https://eo8htsukjtygbsz.m.pipedream.net/says",
+        {"body": JSON.stringify({"sife":2,"p":document.querySelector('#www').value}),"method": "POST"}
+    ).then(e=>{var t=document.querySelector("#send");t.innerText="Success!";setTimeout(()=>t.innerText="Send",1000)})
+}
+</script>
 </body>
 </html>
