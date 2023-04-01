@@ -11,7 +11,7 @@
 fetch("urldata.json").then(p=>p.json()).then(o=>{window.urls=o;bind()});
 function bind(){
     if(window.urls){
-        Object.keys(j).map(i=>{
+        Object.keys(window.urls).map(i=>{
             document.body.innerHTML+=`<div onclick="p('${i}')">${i}</div>`
         })
     }else{alert("Error")}
