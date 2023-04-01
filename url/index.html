@@ -1,18 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Url | Collect</title>
 </head>
+<style>
+.a{
+    display: inline;
+}
+</style>
 <body>
 <script>
 fetch("urldata.json").then(p=>p.json()).then(o=>{window.urls=o;bind()});
 function bind(){
     if(window.urls){
         Object.keys(window.urls).map(i=>{
-            document.body.innerHTML+=`<div onclick="p('${i}')">${i}</div>`
+            document.body.innerHTML+=`<div class="a" onclick="p('${i}')">${i}</div>`
         })
     }else{alert("Error")}
 }
