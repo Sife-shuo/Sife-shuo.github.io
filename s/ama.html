@@ -1,0 +1,17 @@
+<html>
+<body>
+<input type="file" id="f"><button onclick="l()">Subit</button>
+<script>
+function l(){
+ fileToBase64(document.getElementById('f').files[0],console.log);
+}
+function fileToBase64(file, callback) {
+  const fileReader = new FileReader()
+  fileReader.readAsDataURL(file)
+  fileReader.onload = function () {
+    callback(this.result)
+  }
+}
+</script>
+</body>
+</html>
