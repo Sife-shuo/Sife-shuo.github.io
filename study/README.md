@@ -1,4 +1,6 @@
 # Study
+- [简体中文](./README_zh.md)
+- English
 ## Wordprocess
 A string encryption tool.
 

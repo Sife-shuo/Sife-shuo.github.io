@@ -1,4 +1,4 @@
-# L
-显示当前网页地址
+# ua
+在页面上写入用户UserAgent
 - [English](./README.md)
 - 简体中文

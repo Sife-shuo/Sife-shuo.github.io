@@ -1,4 +1,6 @@
 # python
+- [简体中文](./README_zh.md)
+- English
 ## Comboo.py
 A mouse and keyboard automation tool(be dependent on pynput)
 

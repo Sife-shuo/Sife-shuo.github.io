@@ -1,4 +1,6 @@
 # python
+- [English](./README.md)
+- 简体中文
 ## Comboo.py
 一个鼠标键盘自动化工具（依赖：pynput）
 

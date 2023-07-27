@@ -1,4 +1,6 @@
 # Study
+- [English](./README.md)
+- 简体中文
 ## Wordprocess
 一个字符串加密解密工具
 
