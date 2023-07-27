@@ -1,5 +1,5 @@
 # Sife-shuo.github.io
-[简体中文](https://github.com/Sife-shuo/Sife-shuo.github.io/blob/main/README-CN.md)
+[简体中文](./README-zh.md)
 - ### **Taber**
 ## Taber
 > Online demo address : https://sife-shuo.github.io/Taber/
