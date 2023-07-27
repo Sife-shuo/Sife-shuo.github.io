@@ -46,7 +46,7 @@ def hui():
         pass
 hanshu = Tk()
 hanshu.title('函数绘制')
-hanshu.iconbitmap('hanshu.ico')
+#hanshu.iconbitmap('hanshu.ico')
 hanshu.columnconfigure(0)
 hanshu.rowconfigure(0)
 hanshuo=ttk.Frame(hanshu, padding="10")
