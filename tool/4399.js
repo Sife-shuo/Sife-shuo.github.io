@@ -30,7 +30,7 @@ $(function(){
 	var Anti_connectRetryTimes = 0;//��������
 	var Anti_connectRetryMaxTimes = 6;//��ೢ���������� ����errr��timeout���ᴥ�� ��߳���2
 
-	var Anti_self_role = 0;//1�ǳ��� ������0
+	var Anti_self_role = 1;//1�ǳ��� ������0
 	var Anti_get_self_role = 0;//�Ƿ��ȡ���û����� ��ȡ����1 ��ȡ����2
 	
 	//�Ƿ�������Ϸҳ�汻������������Ƕ
