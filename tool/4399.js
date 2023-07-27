@@ -973,37 +973,8 @@ $(function(){
 	}
 });
 	if(window.location.host=="www.4399.com" || window.location.host=="h.4399.com"  || window.location.host=="zuopin.4399.com" || window.location.host=="h.api.4399.com" || window.location.host=="zxwyouxi.com"){
-		//����F12
-		$(document).keydown(function(event){
-			if(event.keyCode==123){
-				if(event.preventDefault){
-					event.preventDefault();
-				}else{
-					window.event.returnValue == false;
-				}
-			}
-		}); 
-		//����ctrl+shift+i
-		$(document).keydown(function(event){
-		����if(event.ctrlKey && event.shiftKey && event.keyCode==73){
-				if(event.preventDefault){
-					event.preventDefault();
-				}else{
-					window.event.returnValue == false;
-				}
-		����}
-		});
-		// Ϊ�Ҽ������Զ����¼������Խ���
-		$(document).ready(function(){
-			$(document).bind("contextmenu",function(e){
-				return false;
-			});
-		});
-
-
 		function consoleOpenCallback() {
-			alert('�رյ��Դ�');
-			window.location.reload();
+			return 0;
 		}
 
 		var Anti_numtots = 0;
