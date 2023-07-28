@@ -1,0 +1,157 @@
+<!DOCTYPE HTML>
+<html onmousedown="o(event)">
+<head>
+<style>
+@keyframes thing{
+	from{width: 100px;}
+	to{width: 200px;}
+}
+body{
+    height: 700px;
+	background-color: rgb(230, 230, 230);
+}
+img{
+    image-rendering: crisp-edges;
+    position:fixed;
+	box-shadow: rgba(163, 177, 198, 0.7) 12px 12px 24px 0px, rgb(163, 177, 198, 0.7) -12px -12px 24px 0px;
+}
+#ri{
+	animation-timing-function:cubic-bezier(0.5,0,0.5,1);
+	background-color: white;
+	padding: 10px;
+	border-radius: 7px;
+	width: 200px;
+	position: sticky;
+	display: flex;
+	transition:width 2s;
+	overflow: hidden;
+}
+#ri #choose{
+	border-radius: 5px;
+	background-color: #8f8f8f;
+	color: rgb(255, 255, 255);
+	height: 27.5px;
+	text-align: center;
+	padding-top: 2.5px;
+	width: 170px;
+	margin-right: 10px;
+}
+#ri:hover{
+	width: 340px;
+}
+#ri #thkz{
+	width: 170px;
+	border-style:dashed;
+	border-color:blue;
+    border-width:3px;
+	height: 24px;
+}
+#ri input{
+	display: none;
+}
+</style>
+<script>
+sdf=0;
+l=10;
+function o(){
+    sdf=1;
+	x1=event.screenX-document.getElementById('pic').style.left.replace("px","");
+	y1=event.screenY-document.getElementById('pic').style.top.replace("px","");
+};
+function op(){
+    if(sdf==1){
+        document.getElementById('pic').style.left=event.screenX-x1+'px';
+        document.getElementById('pic').style.top=event.screenY-y1+'px';
+    }
+}
+window.onload = function() {
+	var oDiv = document.getElementById('pic');
+	oDiv.onmousewheel = fn;
+	if (oDiv.addEventListener){
+		oDiv.addEventListener('DOMMouseScroll', fn, false);
+	}
+	function fn(ev) {
+		var ev = ev || event;
+		var b = true;
+		if (ev.wheelDelta) {
+			b = ev.wheelDelta > 0 ? true : false;
+		} else {
+			b = ev.detail < 0 ? true : false;
+		};
+		if ( b ) {
+			this.style.height = Number(document.getElementById('pic').offsetHeight) + l + 'px';
+			this.style.left=Number(this.style.left.replace('px',''))-(ev.pageX-Number(this.style.left.replace("px","")))*l/Number(this.offsetWidth)+'px';
+			this.style.top=Number(this.style.top.replace('px',''))-(ev.pageY-Number(this.style.top.replace("px","")))*l/Number(this.offsetHeight)+'px';
+		} else {
+			this.style.height = Number(document.getElementById('pic').offsetHeight) - l + 'px';
+			this.style.left=Number(this.style.left.replace('px',''))+(ev.pageX-Number(this.style.left.replace("px","")))*l/Number(this.offsetWidth)+'px';
+			this.style.top=Number(this.style.top.replace('px',''))+(ev.pageY-Number(this.style.top.replace("px","")))*l/Number(this.offsetHeight)+'px';
+		}
+		if (ev.preventDefault) {
+			ev.preventDefault();
+		}
+		return false;
+	}
+	document.attachEvent('oncontextmenu', function() {
+		return false;
+	});
+};
+function j(){
+    sdf=0;
+};
+function jpk(thi){
+	function getObjectURL(file) {
+		var url = null;
+		if (window.createObjcectURL != undefined) {
+			url = window.createOjcectURL(file);
+		} else if (window.URL != undefined) {
+			url = window.URL.createObjectURL(file);
+		} else if (window.webkitURL != undefined) {
+			url = window.webkitURL.createObjectURL(file);
+		}
+		return url;
+	}
+	var objURL = getObjectURL(thi.files[0]);
+	document.getElementById('pic').setAttribute('src',objURL);
+};
+function fg(){
+	var evt = document.createEvent("MouseEvents");
+		evt.initEvent("click", true, true);
+		document.getElementById("im").dispatchEvent(evt);
+};
+function getObjectURL(file) {
+	var url = null;
+	if (window.createObjcectURL != undefined) {
+		url = window.createOjcectURL(file);
+	} else if (window.URL != undefined) {
+		url = window.URL.createObjectURL(file);
+	} else if (window.webkitURL != undefined) {
+		url = window.webkitURL.createObjectURL(file);
+	}
+	return url;
+};
+</script>
+</head>
+<body>
+<div id="ri">
+	<div id="choose" onclick="fg()">选择图片</div>
+	<input type="file" id="im" onchange="jpk(this)">
+	<div id="thkz"></div>
+	<script>
+		var dp = document.getElementById("thkz");
+			dp.addEventListener('dragover', function(e) {
+				e.stopPropagation();
+				e.preventDefault();
+			});
+			dp.addEventListener("drop", function(e) {
+				e.stopPropagation();
+				e.preventDefault();
+				let file =getObjectURL(e.dataTransfer.files[0]);
+				document.getElementById('pic').setAttribute('src',file);
+				return false;
+			});
+	</script>
+</div>
+<img src="" style="margin: auto;display: block;" id="pic" draggable="false" onmouseup="j()" onmousemove="op(event)">
+</body>
+</html>
