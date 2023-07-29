@@ -38,6 +38,9 @@ def hui():
                 hk = 0
             else:
                 hk = int(hk)
+            
+            canvas.delete("all")
+            pan()
             f(aa, hh, hk)
         else:
             canvas.delete("all")
